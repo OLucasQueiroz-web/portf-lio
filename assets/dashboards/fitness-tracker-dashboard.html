@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fitness Tracker — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FF;
+  --surface: #FFFFFF;
+  --border: #DDE4F5;
+  --text: #0F1A3E;
+  --muted: #7A88B0;
+  --accent: #2351F5;
+  --accent-light: #EEF2FF;
+  --accent2: #4F74FF;
+  --accent3: #1A3CC2;
+  --accent4: #7A9BFF;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.main { padding: 36px 40px; min-height: 100vh; }
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.45s ease forwards;
+}
+
+.header-title { font-size: 28px; font-weight: 700; line-height: 1.15; letter-spacing: -0.5px; }
+.header-title em { font-style: italic; color: var(--accent); }
+.header-sub { font-size: 12.5px; color: var(--muted); margin-top: 4px; font-weight: 400; }
+
+.header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.live-dot {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 600; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.live-dot::before {
+  content: ''; width: 7px; height: 7px;
+  background: var(--accent); border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+.period-selector {
+  display: flex; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.period-btn {
+  font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 500;
+  padding: 7px 14px; cursor: pointer; color: var(--muted);
+  background: transparent; border: none; transition: all 0.15s;
+}
+.period-btn.active { background: var(--accent); color: #fff; }
+
+.btn-export {
+  font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 500;
+  padding: 8px 16px; background: transparent;
+  border: 1px solid var(--border); border-radius: 8px;
+  cursor: pointer; color: var(--muted); transition: all 0.15s;
+}
+.btn-export:hover { border-color: var(--accent); color: var(--accent); }
+
+/* KPI STRIP */
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeUp 0.45s ease forwards;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.kpi-card:hover { box-shadow: 0 8px 24px rgba(35,81,245,0.08); transform: translateY(-2px); }
+.kpi-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--kpi-color, var(--border));
+  border-radius: 14px 14px 0 0;
+}
+.kpi-card:nth-child(1) { animation-delay: 0.08s; --kpi-color: var(--accent); }
+.kpi-card:nth-child(2) { animation-delay: 0.14s; --kpi-color: var(--accent2); }
+.kpi-card:nth-child(3) { animation-delay: 0.20s; --kpi-color: var(--accent3); }
+.kpi-card:nth-child(4) { animation-delay: 0.26s; --kpi-color: var(--accent4); }
+
+.kpi-icon {
+  font-size: 18px; margin-bottom: 6px; display: block;
+}
+.kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin-bottom: 4px; }
+.kpi-value { font-size: 30px; font-weight: 700; letter-spacing: -1px; line-height: 1; color: var(--text); }
+.kpi-delta { display: inline-flex; align-items: center; gap: 4px; margin-top: 8px; font-size: 11px; font-weight: 500; }
+.kpi-delta.up { color: var(--accent); }
+.kpi-delta.down { color: var(--accent3); }
+
+/* GRIDS */
+.grid-main { display: grid; grid-template-columns: 1fr 300px; gap: 20px; margin-bottom: 20px; }
+.grid-bottom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+/* CARD */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 24px 26px;
+  opacity: 0; animation: fadeUp 0.45s ease forwards;
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: 0 6px 20px rgba(35,81,245,0.06); }
+.grid-main .card:nth-child(1) { animation-delay: 0.28s; }
+.grid-main .card:nth-child(2) { animation-delay: 0.34s; }
+.grid-bottom .card:nth-child(1) { animation-delay: 0.40s; }
+.grid-bottom .card:nth-child(2) { animation-delay: 0.46s; }
+.grid-bottom .card:nth-child(3) { animation-delay: 0.52s; }
+
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.card-title { font-size: 14px; font-weight: 600; letter-spacing: -0.2px; }
+.card-tag {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--accent); background: var(--accent-light);
+  padding: 3px 10px; border-radius: 20px;
+}
+
+/* CHART */
+.chart-wrapper { position: relative; }
+.chart-area { width: 100%; height: 210px; }
+.chart-area svg { width: 100%; height: 100%; overflow: visible; }
+.tooltip {
+  position: absolute; background: var(--text); color: #fff;
+  padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: 500;
+  pointer-events: none; opacity: 0; transition: opacity 0.15s;
+  white-space: nowrap; z-index: 100;
+}
+.axis-label { font-family: 'Poppins', sans-serif; font-size: 9.5px; fill: var(--muted); }
+
+/* RING PROGRESS */
+.ring-section {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.ring-item {
+  display: flex; align-items: center; gap: 14px;
+}
+.ring-svg-wrap { position: relative; width: 56px; height: 56px; flex-shrink: 0; }
+.ring-svg-wrap svg { width: 56px; height: 56px; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: var(--bg); stroke-width: 5; }
+.ring-fill { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1); }
+.ring-label-inner {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-size: 11px; font-weight: 700; color: var(--text); text-align: center; line-height: 1;
+}
+.ring-info { flex: 1; }
+.ring-name { font-size: 12.5px; font-weight: 600; margin-bottom: 3px; }
+.ring-detail { font-size: 11px; color: var(--muted); }
+.ring-pct { font-size: 11.5px; font-weight: 700; color: var(--accent); }
+
+/* WORKOUT ROWS */
+.workout-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+  cursor: default; transition: all 0.12s;
+}
+.workout-row:last-child { border-bottom: none; }
+.workout-row:hover {
+  margin: 0 -10px; padding: 9px 10px;
+  background: var(--bg); border-radius: 8px;
+  border-bottom: 1px solid transparent;
+}
+.workout-left { display: flex; align-items: center; gap: 10px; }
+.workout-icon {
+  width: 32px; height: 32px; background: var(--accent-light);
+  border-radius: 8px; display: flex; align-items: center;
+  justify-content: center; font-size: 14px; flex-shrink: 0;
+}
+.workout-name { font-size: 12.5px; font-weight: 500; }
+.workout-sub { font-size: 10.5px; color: var(--muted); }
+.workout-right { text-align: right; }
+.workout-kcal { font-size: 12px; font-weight: 600; color: var(--accent); }
+.workout-dur { font-size: 10.5px; color: var(--muted); }
+
+/* MUSCLE MAP */
+.muscle-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.muscle-item {
+  background: var(--bg); border-radius: 10px; padding: 10px 12px;
+  display: flex; align-items: center; gap: 8px;
+  transition: all 0.15s;
+}
+.muscle-item:hover { background: var(--accent-light); }
+.muscle-dot {
+  width: 10px; height: 10px; border-radius: 3px;
+  flex-shrink: 0;
+}
+.muscle-name { font-size: 11px; font-weight: 500; flex: 1; }
+.muscle-sets { font-size: 10px; font-weight: 600; color: var(--muted); }
+
+/* HEART RATE ZONES */
+.zones-list { display: flex; flex-direction: column; gap: 10px; }
+.zone-row { display: flex; align-items: center; gap: 10px; }
+.zone-label { font-size: 11px; font-weight: 500; color: var(--muted); width: 70px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.4px; }
+.zone-bar-wrap { flex: 1; height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+.zone-bar {
+  height: 100%; border-radius: 4px;
+  transform: scaleX(0); transform-origin: left;
+  animation: growBar 0.9s cubic-bezier(.22,1,.36,1) forwards;
+}
+.zone-row:nth-child(1) .zone-bar { animation-delay: 0.45s; }
+.zone-row:nth-child(2) .zone-bar { animation-delay: 0.55s; }
+.zone-row:nth-child(3) .zone-bar { animation-delay: 0.65s; }
+.zone-row:nth-child(4) .zone-bar { animation-delay: 0.75s; }
+.zone-row:nth-child(5) .zone-bar { animation-delay: 0.85s; }
+.zone-pct { font-size: 11.5px; font-weight: 600; color: var(--text); width: 34px; text-align: right; flex-shrink: 0; }
+
+/* STREAK CALENDAR */
+.streak-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+.streak-day {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 600; color: var(--muted);
+  background: var(--bg);
+  transition: transform 0.15s;
+  cursor: default;
+}
+.streak-day:hover { transform: scale(1.15); }
+.streak-day.done { background: var(--accent); color: #fff; }
+.streak-day.done-light { background: var(--accent-light); color: var(--accent); }
+.streak-day.today { background: var(--accent); color: #fff; box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent); }
+.streak-day.rest { background: var(--bg); color: var(--border); }
+.day-labels {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 5px; margin-bottom: 6px;
+}
+.day-lbl { font-size: 9px; font-weight: 600; text-transform: uppercase; color: var(--muted); text-align: center; letter-spacing: 0.5px; }
+
+.streak-summary {
+  display: flex; gap: 16px; margin-top: 16px;
+  padding-top: 14px; border-top: 1px solid var(--border);
+}
+.streak-stat { flex: 1; }
+.streak-stat-val { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--accent); }
+.streak-stat-lbl { font-size: 10px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; }
+
+/* HEATMAP weekly */
+.heatmap-wrap { overflow-x: auto; }
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: 60px repeat(7, 1fr);
+  gap: 3px; min-width: 320px;
+}
+.hm-cell {
+  height: 28px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 500; color: var(--muted); background: var(--bg);
+}
+.hm-cell.header { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; background: transparent; color: var(--muted); }
+.hm-cell.row-label { background: transparent; font-size: 9.5px; font-weight: 500; justify-content: flex-start; padding-left: 2px; }
+.hm-cell.data { color: #fff; font-weight: 600; opacity: 0; animation: fadeIn 0.3s ease forwards; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes growBar { to { transform: scaleX(1); } }
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.8); } }
+@keyframes drawRing { to { stroke-dashoffset: 0; } }
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+  .grid-main { grid-template-columns: 1fr; }
+  .grid-bottom { grid-template-columns: repeat(2, 1fr); }
+  .grid-bottom .card:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 900px) {
+  .main { padding: 32px 20px; }
+  .header { flex-direction: column; gap: 14px; }
+  .header-right { width: 100%; justify-content: flex-start; }
+  .grid-bottom { grid-template-columns: 1fr; }
+  .grid-bottom .card:last-child { grid-column: auto; }
+}
+@media (max-width: 600px) {
+  .main { padding: 24px 14px 28px; }
+  .kpi-strip { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .kpi-value { font-size: 24px; }
+  .card { padding: 18px 16px; }
+  .header-title { font-size: 22px; }
+}
+@media (max-width: 400px) {
+  .kpi-strip { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<main class="main">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-title">Fitness <em>Tracker</em></div>
+      <div class="header-sub">Fevereiro 2025 · sincronizado há 2 min</div>
+    </div>
+    <div class="header-right">
+      <span class="live-dot">Ao vivo</span>
+      <div class="period-selector">
+        <button class="period-btn">7d</button>
+        <button class="period-btn active">30d</button>
+        <button class="period-btn">90d</button>
+      </div>
+      <button class="btn-export">↓ Exportar</button>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <span class="kpi-icon">🔥</span>
+      <div class="kpi-label">Calorias Queimadas</div>
+      <div class="kpi-value" data-target="24380" data-suffix=" kcal">0</div>
+      <div class="kpi-delta up">↑ 14.2% vs mês anterior</div>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-icon">⚡</span>
+      <div class="kpi-label">Treinos Realizados</div>
+      <div class="kpi-value" data-target="22">0</div>
+      <div class="kpi-delta up">↑ 4 treinos a mais</div>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-icon">🏃</span>
+      <div class="kpi-label">Distância Total</div>
+      <div class="kpi-value" data-target="147.4" data-suffix=" km">0</div>
+      <div class="kpi-delta up">↑ 22.1% vs mês anterior</div>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-icon">💪</span>
+      <div class="kpi-label">Sequência Atual</div>
+      <div class="kpi-value" data-target="14" data-suffix=" dias">0</div>
+      <div class="kpi-delta up">↑ Recorde pessoal!</div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid-main">
+
+    <!-- CALORIES CHART -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Calorias ao longo do tempo</div>
+        <div class="card-tag">30 dias</div>
+      </div>
+      <div class="chart-wrapper">
+        <div class="tooltip" id="tooltip"></div>
+        <div class="chart-area">
+          <svg id="calories-svg" viewBox="0 0 600 210" preserveAspectRatio="none"></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOAL RINGS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Metas do Mês</div>
+        <div class="card-tag">Progresso</div>
+      </div>
+      <div class="ring-section" id="ring-section"></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="grid-bottom">
+
+    <!-- RECENT WORKOUTS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Últimos Treinos</div>
+        <div class="card-tag">Semana</div>
+      </div>
+      <div id="workout-list"></div>
+    </div>
+
+    <!-- HEART RATE ZONES -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Zonas de FC</div>
+        <div class="card-tag">Frequência</div>
+      </div>
+      <div class="zones-list" id="zones-list"></div>
+      <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px;">Zona predominante</div>
+        <div style="display:flex;align-items:baseline;gap:8px;">
+          <span style="font-size:26px;font-weight:700;letter-spacing:-1px;color:var(--accent);" id="dominant-zone">Z3</span>
+          <span style="font-size:11.5px;color:var(--muted);" id="dominant-label">Aeróbico moderado · 38%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STREAK CALENDAR -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Sequência de Treinos</div>
+        <div class="card-tag">Fevereiro</div>
+      </div>
+      <div class="day-labels" id="day-labels"></div>
+      <div class="streak-grid" id="streak-grid"></div>
+      <div class="streak-summary">
+        <div class="streak-stat">
+          <div class="streak-stat-val" id="streak-val">14</div>
+          <div class="streak-stat-lbl">Dias seguidos</div>
+        </div>
+        <div class="streak-stat">
+          <div class="streak-stat-val" id="best-val">14</div>
+          <div class="streak-stat-lbl">Melhor sequência</div>
+        </div>
+        <div class="streak-stat">
+          <div class="streak-stat-val" id="month-val">19</div>
+          <div class="streak-stat-lbl">Dias ativos</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── DATASETS ──────────────────────────────────────
+const PERIODS = {
+  '7d': {
+    subtitle: 'Fev 22–28, 2025 · sincronizado há 2 min',
+    kpi: [
+      { target: 5820,  suffix: ' kcal', delta: '↑ 8.3%',  dir: 'up',   note: 'vs semana anterior' },
+      { target: 5,     suffix: '',      delta: '↑ 1 treino',dir: 'up',  note: 'vs semana anterior' },
+      { target: 32.6,  suffix: ' km',   delta: '↑ 15.4%', dir: 'up',   note: 'vs semana anterior' },
+      { target: 14,    suffix: ' dias',  delta: '↑ Recorde!', dir: 'up', note: '' },
+    ],
+    chartDays: 7,
+    chartLabels: ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+    chartBase: 700, chartTrend: 30, chartNoise: 150,
+    chartSpikes: { 2: 200, 5: 300 },
+    chartUnit: 'kcal',
+    rings: [
+      { name: 'Calorias', current: 5820, goal: 7000, unit: 'kcal', color: 'var(--accent)' },
+      { name: 'Treinos',  current: 5,    goal: 6,    unit: 'treinos', color: 'var(--accent2)' },
+      { name: 'Distância',current: 32.6, goal: 40,   unit: 'km',   color: 'var(--accent3)' },
+    ],
+    workouts: [
+      { icon: '🏃', name: 'Corrida', sub: '28 fev · 7:00', kcal: 620, dur: '48 min' },
+      { icon: '🏊', name: 'Natação', sub: '27 fev · 8:30', kcal: 540, dur: '45 min' },
+      { icon: '🚴', name: 'Bike',    sub: '26 fev · 6:45', kcal: 710, dur: '62 min' },
+      { icon: '💪', name: 'Musculação', sub: '25 fev · 18:00', kcal: 390, dur: '55 min' },
+      { icon: '🧘', name: 'Yoga',    sub: '23 fev · 7:15', kcal: 210, dur: '40 min' },
+    ],
+    zones: [
+      { label: 'Z1 Repouso', pct: 8,  bar: '8%',  color: '#93AFFF' },
+      { label: 'Z2 Leve',    pct: 20, bar: '20%', color: 'var(--accent4)' },
+      { label: 'Z3 Aeróbico',pct: 40, bar: '40%', color: 'var(--accent2)' },
+      { label: 'Z4 Anaeróbico', pct: 25, bar: '25%', color: 'var(--accent)' },
+      { label: 'Z5 Máximo',  pct: 7,  bar: '7%',  color: 'var(--accent3)' },
+    ],
+    dominant: { zone: 'Z3', label: 'Aeróbico · 40%' },
+    streakDays: buildStreak7(),
+    streakStats: { current: 14, best: 14, month: 5 },
+  },
+  '30d': {
+    subtitle: 'Fevereiro 2025 · sincronizado há 2 min',
+    kpi: [
+      { target: 24380, suffix: ' kcal', delta: '↑ 14.2%', dir: 'up',   note: 'vs mês anterior' },
+      { target: 22,    suffix: '',      delta: '↑ 4 treinos a mais', dir: 'up', note: '' },
+      { target: 147.4, suffix: ' km',   delta: '↑ 22.1%', dir: 'up',   note: 'vs mês anterior' },
+      { target: 14,    suffix: ' dias',  delta: '↑ Recorde pessoal!', dir: 'up', note: '' },
+    ],
+    chartDays: 30,
+    chartLabels: Array.from({length:30},(_,i)=>i===0?'1':i===6?'7':i===13?'14':i===20?'21':i===27?'28':''),
+    chartBase: 600, chartTrend: 15, chartNoise: 300,
+    chartSpikes: { 10: 450, 21: 600 },
+    chartUnit: 'kcal',
+    rings: [
+      { name: 'Calorias', current: 24380, goal: 28000, unit: 'kcal', color: 'var(--accent)' },
+      { name: 'Treinos',  current: 22,    goal: 26,    unit: 'treinos', color: 'var(--accent2)' },
+      { name: 'Distância',current: 147.4, goal: 180,   unit: 'km',   color: 'var(--accent3)' },
+    ],
+    workouts: [
+      { icon: '🏃', name: 'Corrida',    sub: '28 fev · 7:00',  kcal: 620, dur: '48 min' },
+      { icon: '🏊', name: 'Natação',    sub: '26 fev · 8:30',  kcal: 540, dur: '45 min' },
+      { icon: '🚴', name: 'Bike',       sub: '24 fev · 6:45',  kcal: 710, dur: '62 min' },
+      { icon: '💪', name: 'Musculação', sub: '22 fev · 18:00', kcal: 390, dur: '55 min' },
+      { icon: '🧘', name: 'Yoga',       sub: '20 fev · 7:15',  kcal: 210, dur: '40 min' },
+    ],
+    zones: [
+      { label: 'Z1 Repouso', pct: 10, bar: '10%', color: '#93AFFF' },
+      { label: 'Z2 Leve',    pct: 22, bar: '22%', color: 'var(--accent4)' },
+      { label: 'Z3 Aeróbico',pct: 38, bar: '38%', color: 'var(--accent2)' },
+      { label: 'Z4 Anaeróbico', pct: 22, bar: '22%', color: 'var(--accent)' },
+      { label: 'Z5 Máximo',  pct: 8,  bar: '8%',  color: 'var(--accent3)' },
+    ],
+    dominant: { zone: 'Z3', label: 'Aeróbico moderado · 38%' },
+    streakDays: buildStreak30(),
+    streakStats: { current: 14, best: 14, month: 19 },
+  },
+  '90d': {
+    subtitle: 'Out–Dez 2024 · sincronizado há 2 min',
+    kpi: [
+      { target: 68400, suffix: ' kcal', delta: '↑ 31.5%', dir: 'up',   note: 'vs trimestre anterior' },
+      { target: 64,    suffix: '',      delta: '↑ 18 treinos a mais', dir: 'up', note: '' },
+      { target: 421.8, suffix: ' km',   delta: '↑ 38.2%', dir: 'up',   note: 'vs trimestre anterior' },
+      { target: 14,    suffix: ' dias',  delta: '↑ Recorde pessoal!', dir: 'up', note: '' },
+    ],
+    chartDays: 90,
+    chartLabels: Array.from({length:90},(_,i)=>i===0?'Out':i===30?'Nov':i===60?'Dez':i===89?'31':''),
+    chartBase: 400, chartTrend: 8, chartNoise: 250,
+    chartSpikes: { 15: 400, 35: 500, 55: 600, 75: 700 },
+    chartUnit: 'kcal',
+    rings: [
+      { name: 'Calorias', current: 68400, goal: 84000, unit: 'kcal', color: 'var(--accent)' },
+      { name: 'Treinos',  current: 64,    goal: 78,    unit: 'treinos', color: 'var(--accent2)' },
+      { name: 'Distância',current: 421.8, goal: 540,   unit: 'km',   color: 'var(--accent3)' },
+    ],
+    workouts: [
+      { icon: '🏃', name: 'Corrida',    sub: '28 fev · 7:00',  kcal: 620, dur: '48 min' },
+      { icon: '🏊', name: 'Natação',    sub: '26 fev · 8:30',  kcal: 540, dur: '45 min' },
+      { icon: '🚴', name: 'Bike',       sub: '24 fev · 6:45',  kcal: 710, dur: '62 min' },
+      { icon: '💪', name: 'Musculação', sub: '22 fev · 18:00', kcal: 390, dur: '55 min' },
+      { icon: '🧘', name: 'Yoga',       sub: '20 fev · 7:15',  kcal: 210, dur: '40 min' },
+    ],
+    zones: [
+      { label: 'Z1 Repouso', pct: 12, bar: '12%', color: '#93AFFF' },
+      { label: 'Z2 Leve',    pct: 25, bar: '25%', color: 'var(--accent4)' },
+      { label: 'Z3 Aeróbico',pct: 35, bar: '35%', color: 'var(--accent2)' },
+      { label: 'Z4 Anaeróbico', pct: 20, bar: '20%', color: 'var(--accent)' },
+      { label: 'Z5 Máximo',  pct: 8,  bar: '8%',  color: 'var(--accent3)' },
+    ],
+    dominant: { zone: 'Z3', label: 'Aeróbico moderado · 35%' },
+    streakDays: buildStreak30(),
+    streakStats: { current: 14, best: 14, month: 19 },
+  }
+};
+
+function buildStreak7() {
+  // Last 7 days ending today (Sat 28 Feb)
+  return [
+    {d:'22',s:'done'},{d:'23',s:'rest'},{d:'24',s:'done'},{d:'25',s:'done'},
+    {d:'26',s:'done'},{d:'27',s:'done'},{d:'28',s:'today'},
+  ];
+}
+
+function buildStreak30() {
+  const days = [];
+  const pattern = [1,0,1,1,1,1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,0];
+  for (let i = 0; i < 28; i++) {
+    const d = i + 1;
+    const isToday = d === 28;
+    const active = pattern[i];
+    days.push({ d: String(d), s: isToday ? 'today' : active ? (d >= 15 ? 'done' : 'done-light') : 'rest' });
+  }
+  return days;
+}
+
+// ── COUNTER ──────────────────────────────────────
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const isFloat = String(target).includes('.');
+  const duration = 1100;
+  const start = performance.now();
+  function fmt(n) {
+    if (isFloat) return prefix + n.toFixed(1) + suffix;
+    if (n >= 1000) return prefix + Math.round(n).toLocaleString('pt-BR') + suffix;
+    return prefix + Math.round(n) + suffix;
+  }
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 4);
+    el.textContent = fmt(target * ease);
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = fmt(target);
+  }
+  requestAnimationFrame(step);
+}
+
+// ── UPDATE KPIs ──────────────────────────────────
+function updateKPIs(p) {
+  const cards = document.querySelectorAll('.kpi-card');
+  const icons = ['🔥','⚡','🏃','💪'];
+  p.kpi.forEach((k, i) => {
+    const card = cards[i];
+    const valEl = card.querySelector('.kpi-value');
+    const deltaEl = card.querySelector('.kpi-delta');
+    valEl.dataset.target = k.target;
+    valEl.dataset.prefix = k.prefix || '';
+    valEl.dataset.suffix = k.suffix;
+    valEl.textContent = '0';
+    animateCounter(valEl);
+    deltaEl.textContent = `${k.delta} ${k.note}`.trim();
+    deltaEl.className = 'kpi-delta ' + k.dir;
+  });
+  document.querySelector('.header-sub').textContent = p.subtitle;
+}
+
+// ── RINGS ────────────────────────────────────────
+function buildRings(p) {
+  const sec = document.getElementById('ring-section');
+  sec.innerHTML = '';
+  p.rings.forEach((r, i) => {
+    const pct = Math.min(Math.round((r.current / r.goal) * 100), 100);
+    const R = 23, C = 2 * Math.PI * R;
+    const offset = C - (pct / 100) * C;
+    const delay = 0.5 + i * 0.15;
+
+    const colorMap = { 'var(--accent)': '#2351F5', 'var(--accent2)': '#4F74FF', 'var(--accent3)': '#1A3CC2' };
+    const strokeColor = colorMap[r.color] || r.color;
+
+    sec.innerHTML += `
+      <div class="ring-item">
+        <div class="ring-svg-wrap">
+          <svg viewBox="0 0 56 56">
+            <circle class="ring-bg" cx="28" cy="28" r="${R}"/>
+            <circle class="ring-fill" cx="28" cy="28" r="${R}"
+              stroke="${strokeColor}"
+              stroke-dasharray="${C}"
+              stroke-dashoffset="${C}"
+              style="animation: none; transition: stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1) ${delay}s;"
+              data-offset="${offset}"
+            />
+          </svg>
+          <div class="ring-label-inner">${pct}%</div>
+        </div>
+        <div class="ring-info">
+          <div class="ring-name">${r.name}</div>
+          <div class="ring-detail">${r.current.toLocaleString('pt-BR')} / ${r.goal.toLocaleString('pt-BR')} ${r.unit}</div>
+        </div>
+        <div class="ring-pct">${pct}%</div>
+      </div>`;
+  });
+  // Animate rings
+  setTimeout(() => {
+    sec.querySelectorAll('.ring-fill').forEach(circle => {
+      circle.style.strokeDashoffset = circle.dataset.offset;
+    });
+  }, 100);
+}
+
+// ── WORKOUTS ─────────────────────────────────────
+function buildWorkouts(p) {
+  const list = document.getElementById('workout-list');
+  list.innerHTML = p.workouts.map(w => `
+    <div class="workout-row">
+      <div class="workout-left">
+        <div class="workout-icon">${w.icon}</div>
+        <div>
+          <div class="workout-name">${w.name}</div>
+          <div class="workout-sub">${w.sub}</div>
+        </div>
+      </div>
+      <div class="workout-right">
+        <div class="workout-kcal">${w.kcal} kcal</div>
+        <div class="workout-dur">${w.dur}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── ZONES ────────────────────────────────────────
+function buildZones(p) {
+  const list = document.getElementById('zones-list');
+  list.innerHTML = p.zones.map((z, i) => `
+    <div class="zone-row">
+      <div class="zone-label">${z.label}</div>
+      <div class="zone-bar-wrap">
+        <div class="zone-bar" style="width:${z.bar};background:${z.color};animation-delay:${0.45+i*0.1}s;"></div>
+      </div>
+      <div class="zone-pct">${z.pct}%</div>
+    </div>`).join('');
+
+  document.getElementById('dominant-zone').textContent = p.dominant.zone;
+  document.getElementById('dominant-label').textContent = p.dominant.label;
+}
+
+// ── STREAK ───────────────────────────────────────
+function buildStreak(p) {
+  const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const lblEl = document.getElementById('day-labels');
+  lblEl.innerHTML = dayNames.map(d => `<div class="day-lbl">${d}</div>`).join('');
+
+  const grid = document.getElementById('streak-grid');
+  grid.innerHTML = '';
+
+  // Feb 2025 starts on Saturday (day index 6)
+  const firstDayOfWeek = 6; // Saturday
+  for (let i = 0; i < firstDayOfWeek; i++) {
+    const blank = document.createElement('div');
+    blank.className = 'streak-day';
+    blank.style.visibility = 'hidden';
+    grid.appendChild(blank);
+  }
+
+  p.streakDays.forEach(day => {
+    const el = document.createElement('div');
+    el.className = `streak-day ${day.s}`;
+    el.textContent = day.d;
+    el.title = `Dia ${day.d}`;
+    grid.appendChild(el);
+  });
+
+  const s = p.streakStats;
+  document.getElementById('streak-val').textContent = s.current;
+  document.getElementById('best-val').textContent = s.best;
+  document.getElementById('month-val').textContent = s.month;
+}
+
+// ── CHART ────────────────────────────────────────
+function buildChart(p) {
+  const svg = document.getElementById('calories-svg');
+  svg.innerHTML = '';
+  const W = 600, H = 210;
+  const pad = { top: 20, right: 12, bottom: 32, left: 50 };
+  const iW = W - pad.left - pad.right;
+  const iH = H - pad.top - pad.bottom;
+
+  const seed = p.chartDays;
+  const data = Array.from({length: p.chartDays}, (_, i) => {
+    const trend = p.chartBase + i * p.chartTrend;
+    const noise = (Math.sin(i * 2.3 + seed) * 0.5) * p.chartNoise;
+    const spike = p.chartSpikes[i] || 0;
+    return Math.max(p.chartBase * 0.3, Math.round(trend + noise + spike));
+  });
+
+  const labels = p.chartLabels;
+  const minV = Math.min(...data) - Math.round(p.chartNoise * 0.4);
+  const maxV = Math.max(...data) + Math.round(p.chartNoise * 0.4);
+  const xS = i => pad.left + (i / (data.length - 1)) * iW;
+  const yS = v => pad.top + iH - ((v - minV) / (maxV - minV)) * iH;
+
+  [0,.25,.5,.75,1].forEach(t => {
+    const y = pad.top + iH * (1 - t);
+    const v = Math.round(minV + t * (maxV - minV));
+    const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    l.setAttribute('x1', pad.left); l.setAttribute('x2', W - pad.right);
+    l.setAttribute('y1', y); l.setAttribute('y2', y);
+    l.setAttribute('stroke', '#DDE4F5'); l.setAttribute('stroke-width', '1');
+    svg.appendChild(l);
+    const tx = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    tx.setAttribute('x', pad.left - 6); tx.setAttribute('y', y + 4);
+    tx.setAttribute('text-anchor', 'end'); tx.setAttribute('class', 'axis-label');
+    tx.textContent = v >= 1000 ? (v/1000).toFixed(1)+'k' : v;
+    svg.appendChild(tx);
+  });
+
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  const grad = document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+  grad.setAttribute('id','aG'); grad.setAttribute('x1','0'); grad.setAttribute('y1','0');
+  grad.setAttribute('x2','0'); grad.setAttribute('y2','1');
+  const s1 = document.createElementNS('http://www.w3.org/2000/svg','stop');
+  s1.setAttribute('offset','0%'); s1.setAttribute('stop-color','#2351F5'); s1.setAttribute('stop-opacity','0.15');
+  const s2 = document.createElementNS('http://www.w3.org/2000/svg','stop');
+  s2.setAttribute('offset','100%'); s2.setAttribute('stop-color','#2351F5'); s2.setAttribute('stop-opacity','0');
+  grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad); svg.appendChild(defs);
+
+  let ap = `${xS(0)},${yS(data[0])}`;
+  data.forEach((v,i) => { ap += ` ${xS(i)},${yS(v)}`; });
+  ap += ` ${xS(data.length-1)},${H-pad.bottom} ${xS(0)},${H-pad.bottom}`;
+  const area = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  area.setAttribute('points', ap); area.setAttribute('fill','url(#aG)');
+  svg.appendChild(area);
+
+  let d = `M ${xS(0)} ${yS(data[0])}`;
+  data.forEach((v,i) => {
+    if (!i) return;
+    const x0=xS(i-1),y0=yS(data[i-1]),x1=xS(i),y1=yS(v),cx=(x0+x1)/2;
+    d += ` C ${cx} ${y0} ${cx} ${y1} ${x1} ${y1}`;
+  });
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d',d); path.setAttribute('fill','none');
+  path.setAttribute('stroke','#2351F5'); path.setAttribute('stroke-width','2.5');
+  path.style.strokeDasharray = '3000';
+  path.style.strokeDashoffset = '3000';
+  path.style.transition = 'stroke-dashoffset 1.3s cubic-bezier(.22,1,.36,1) 0.1s';
+  svg.appendChild(path);
+  setTimeout(() => { path.style.strokeDashoffset = 0; }, 50);
+
+  const tooltip = document.getElementById('tooltip');
+  const wrapper = document.querySelector('.chart-wrapper');
+  data.forEach((v,i) => {
+    if (labels[i]) {
+      const tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+      tx.setAttribute('x',xS(i)); tx.setAttribute('y',H-8);
+      tx.setAttribute('text-anchor','middle'); tx.setAttribute('class','axis-label');
+      tx.textContent = labels[i]; svg.appendChild(tx);
+    }
+    const xp = xS(i);
+    const hit = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    hit.setAttribute('x', xp - iW/data.length/2);
+    hit.setAttribute('y', pad.top);
+    hit.setAttribute('width', iW/data.length);
+    hit.setAttribute('height', iH);
+    hit.setAttribute('fill','transparent');
+    hit.style.cursor = 'crosshair';
+    hit.addEventListener('mouseenter', () => {
+      const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      dot.setAttribute('cx',xp); dot.setAttribute('cy',yS(v));
+      dot.setAttribute('r','5'); dot.setAttribute('fill','#2351F5');
+      dot.setAttribute('stroke','#fff'); dot.setAttribute('stroke-width','2.5');
+      dot.id = 'hover-dot'; svg.appendChild(dot);
+      const sR = svg.getBoundingClientRect(), wR = wrapper.getBoundingClientRect();
+      tooltip.style.left = (sR.left-wR.left+(xp/W)*sR.width+10)+'px';
+      tooltip.style.top  = (sR.top-wR.top+(yS(v)/H)*sR.height-30)+'px';
+      tooltip.textContent = v.toLocaleString('pt-BR')+' kcal';
+      tooltip.style.opacity = 1;
+    });
+    hit.addEventListener('mouseleave', () => {
+      document.getElementById('hover-dot')?.remove();
+      tooltip.style.opacity = 0;
+    });
+    svg.appendChild(hit);
+  });
+}
+
+// ── APPLY ─────────────────────────────────────────
+function applyPeriod(key) {
+  const p = PERIODS[key];
+  updateKPIs(p);
+  buildChart(p);
+  buildRings(p);
+  buildWorkouts(p);
+  buildZones(p);
+  buildStreak(p);
+}
+
+document.querySelectorAll('.period-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    applyPeriod(this.textContent.trim());
+  });
+});
+
+setTimeout(() => {
+  document.querySelectorAll('.kpi-value[data-target]').forEach(animateCounter);
+}, 250);
+
+applyPeriod('30d');
+</script>
+</body>
+</html>

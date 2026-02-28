@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Product Analytics — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FF;
+  --surface: #FFFFFF;
+  --border: #DDE4F5;
+  --text: #0F1A3E;
+  --muted: #7A88B0;
+  --accent: #2351F5;
+  --accent-light: #EEF2FF;
+  --accent2: #4F74FF;
+  --accent3: #1A3CC2;
+  --accent4: #7A9BFF;
+  --danger: #3B5FE0;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+
+
+
+
+/* ─── MAIN ───────────────────────────────────────── */
+.main {
+  padding: 36px 40px;
+  min-height: 100vh;
+}
+
+/* ─── HEADER ─────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.45s ease forwards;
+}
+
+.header-title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.header-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.header-sub {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.live-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.live-dot::before {
+  content: '';
+  width: 7px; height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+.period-selector {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.period-btn {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 7px 14px;
+  cursor: pointer;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  transition: all 0.15s;
+}
+
+.period-btn.active { background: var(--accent); color: #fff; }
+
+.btn-export {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.btn-export:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ─── KPI STRIP ──────────────────────────────────── */
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeUp 0.45s ease forwards;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.kpi-card:hover {
+  box-shadow: 0 8px 24px rgba(35,81,245,0.08);
+  transform: translateY(-2px);
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--kpi-color, var(--border));
+  border-radius: 14px 14px 0 0;
+}
+
+.kpi-card:nth-child(1) { animation-delay: 0.08s; --kpi-color: var(--accent); }
+.kpi-card:nth-child(2) { animation-delay: 0.14s; --kpi-color: var(--accent2); }
+.kpi-card:nth-child(3) { animation-delay: 0.20s; --kpi-color: var(--accent3); }
+.kpi-card:nth-child(4) { animation-delay: 0.26s; --kpi-color: var(--accent4); }
+
+.kpi-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.kpi-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.kpi-delta.up { color: var(--accent); }
+.kpi-delta.down { color: var(--accent3); }
+
+/* ─── GRIDS ──────────────────────────────────────── */
+.grid-main {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.grid-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* ─── CARD ───────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 26px;
+  opacity: 0;
+  animation: fadeUp 0.45s ease forwards;
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: 0 6px 20px rgba(35,81,245,0.06); }
+
+.grid-main .card:nth-child(1) { animation-delay: 0.28s; }
+.grid-main .card:nth-child(2) { animation-delay: 0.34s; }
+.grid-bottom .card:nth-child(1) { animation-delay: 0.40s; }
+.grid-bottom .card:nth-child(2) { animation-delay: 0.46s; }
+.grid-bottom .card:nth-child(3) { animation-delay: 0.52s; }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card-title { font-size: 14px; font-weight: 600; letter-spacing: -0.2px; }
+
+.card-tag {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ─── CHART ──────────────────────────────────────── */
+.chart-wrapper { position: relative; }
+
+.chart-area { width: 100%; height: 210px; }
+
+.chart-area svg { width: 100%; height: 100%; overflow: visible; }
+
+.tooltip {
+  position: absolute;
+  background: var(--text);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+.axis-label { font-family: 'Poppins', sans-serif; font-size: 9.5px; fill: var(--muted); }
+
+/* ─── FUNNEL ─────────────────────────────────────── */
+.funnel-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 13px;
+}
+
+.funnel-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  width: 76px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.funnel-bar-wrap {
+  flex: 1; height: 8px;
+  background: var(--bg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.funnel-bar {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: growBar 0.9s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.funnel-row:nth-child(1) .funnel-bar { animation-delay: 0.45s; }
+.funnel-row:nth-child(2) .funnel-bar { animation-delay: 0.55s; }
+.funnel-row:nth-child(3) .funnel-bar { animation-delay: 0.65s; }
+.funnel-row:nth-child(4) .funnel-bar { animation-delay: 0.75s; }
+
+.funnel-pct { font-size: 11.5px; font-weight: 600; color: var(--text); width: 38px; text-align: right; flex-shrink: 0; }
+
+/* ─── EVENTS ─────────────────────────────────────── */
+.event-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: default;
+  transition: all 0.12s;
+}
+
+.event-row:last-child { border-bottom: none; }
+
+.event-row:hover {
+  margin: 0 -10px; padding: 9px 10px;
+  background: var(--bg); border-radius: 8px;
+  border-bottom: 1px solid transparent;
+}
+
+.event-name { font-size: 12.5px; font-weight: 500; }
+.event-right { display: flex; align-items: center; gap: 10px; }
+.event-count { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+
+.event-bar-mini {
+  width: 56px; height: 4px;
+  background: var(--bg); border-radius: 2px; overflow: hidden;
+}
+
+.event-bar-fill {
+  height: 100%;
+  background: var(--accent); border-radius: 2px;
+  transform: scaleX(0); transform-origin: left;
+  animation: growBar 0.7s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+/* ─── DEVICES ────────────────────────────────────── */
+.device-list { display: flex; flex-direction: column; gap: 15px; }
+.device-item { display: flex; align-items: center; gap: 12px; }
+
+.device-icon {
+  width: 38px; height: 38px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+
+.device-info { flex: 1; }
+
+.device-name {
+  font-size: 12.5px; font-weight: 600; margin-bottom: 5px;
+  display: flex; justify-content: space-between;
+}
+.device-name span { font-size: 11px; color: var(--muted); font-weight: 400; }
+
+.device-track { height: 5px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+
+.device-fill {
+  height: 100%; border-radius: 3px;
+  transform: scaleX(0); transform-origin: left;
+  animation: growBar 0.9s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 500; color: var(--muted); }
+.legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+/* ─── HEATMAP ────────────────────────────────────── */
+.heatmap-wrap { overflow-x: auto; }
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: 56px repeat(8, 1fr);
+  gap: 3px; min-width: 360px;
+}
+
+.hm-cell {
+  height: 28px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 500;
+  color: var(--muted); background: var(--bg);
+}
+
+.hm-cell.header {
+  font-size: 9px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  background: transparent; color: var(--muted);
+}
+
+.hm-cell.row-label {
+  background: transparent; font-size: 9.5px; font-weight: 500;
+  justify-content: flex-start; padding-left: 2px;
+}
+
+.hm-cell.data {
+  color: #fff; font-weight: 600;
+  opacity: 0; animation: fadeIn 0.3s ease forwards;
+}
+
+/* ─── ANIMATIONS ─────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes growBar { to { transform: scaleX(1); } }
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.4; transform:scale(0.8); }
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 1200px) {
+  .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+  .grid-main { grid-template-columns: 1fr; }
+  .grid-bottom { grid-template-columns: repeat(2, 1fr); }
+  .grid-bottom .card:last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 900px) {
+  .main { padding: 32px 20px; }
+  .header { flex-direction: column; gap: 14px; }
+  .header-right { width: 100%; justify-content: flex-start; }
+  .grid-bottom { grid-template-columns: 1fr; }
+  .grid-bottom .card:last-child { grid-column: auto; }
+}
+
+@media (max-width: 600px) {
+  .main { padding: 24px 14px 28px; }
+  .kpi-strip { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .kpi-value { font-size: 24px; }
+  .card { padding: 18px 16px; }
+  .header-title { font-size: 22px; }
+  .grid-main, .grid-bottom { gap: 14px; }
+}
+
+@media (max-width: 400px) {
+  .kpi-strip { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-title">Product <em>Metrics</em></div>
+      <div class="header-sub">Fevereiro 2025 · dados atualizados há 3 min</div>
+    </div>
+    <div class="header-right">
+      <span class="live-dot">Ao vivo</span>
+      <div class="period-selector">
+        <button class="period-btn">7d</button>
+        <button class="period-btn active">30d</button>
+        <button class="period-btn">90d</button>
+      </div>
+      <button class="btn-export">↓ Exportar</button>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <div class="kpi-label">Usuários Ativos</div>
+      <div class="kpi-value" data-target="28410">0</div>
+      <div class="kpi-delta up">↑ 12.4% vs mês anterior</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Sessões</div>
+      <div class="kpi-value" data-target="94302">0</div>
+      <div class="kpi-delta up">↑ 8.1% vs mês anterior</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Taxa de Conversão</div>
+      <div class="kpi-value" data-target="3.7" data-suffix="%">0</div>
+      <div class="kpi-delta down">↓ 0.3pp vs mês anterior</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Receita MRR</div>
+      <div class="kpi-value" data-target="47200" data-prefix="R$">0</div>
+      <div class="kpi-delta up">↑ 21.7% vs mês anterior</div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid-main">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Sessões ao longo do tempo</div>
+        <div class="card-tag">30 dias</div>
+      </div>
+      <div class="chart-wrapper">
+        <div class="tooltip" id="tooltip"></div>
+        <div class="chart-area">
+          <svg id="sessions-svg" viewBox="0 0 600 210" preserveAspectRatio="none"></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Funil de Conversão</div>
+        <div class="card-tag">Mensal</div>
+      </div>
+      <div>
+        <div class="funnel-row">
+          <div class="funnel-label">Visitantes</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%"></div></div>
+          <div class="funnel-pct">100%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label">Cadastro</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:62%;opacity:0.8"></div></div>
+          <div class="funnel-pct">62%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label">Ativação</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:31%;opacity:0.6"></div></div>
+          <div class="funnel-pct">31%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label">Pagante</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:9%;background:var(--accent3)"></div></div>
+          <div class="funnel-pct">3.7%</div>
+        </div>
+
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px;">Drop-off crítico</div>
+          <div style="display:flex;align-items:baseline;gap:8px;">
+            <span class="dropoff-value" style="font-size:26px;font-weight:700;letter-spacing:-1px;color:var(--accent);">69%</span>
+            <span class="dropoff-label" style="font-size:11.5px;color:var(--muted);">Cadastro → Ativação</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="grid-bottom">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Top Eventos</div>
+        <div class="card-tag">Produto</div>
+      </div>
+      <div>
+        <div class="event-row">
+          <div class="event-name">page_view</div>
+          <div class="event-right"><div class="event-count">284.1k</div><div class="event-bar-mini"><div class="event-bar-fill" style="width:100%;animation-delay:0.5s"></div></div></div>
+        </div>
+        <div class="event-row">
+          <div class="event-name">btn_click</div>
+          <div class="event-right"><div class="event-count">97.3k</div><div class="event-bar-mini"><div class="event-bar-fill" style="width:34%;animation-delay:0.55s"></div></div></div>
+        </div>
+        <div class="event-row">
+          <div class="event-name">signup_start</div>
+          <div class="event-right"><div class="event-count">58.4k</div><div class="event-bar-mini"><div class="event-bar-fill" style="width:21%;animation-delay:0.6s"></div></div></div>
+        </div>
+        <div class="event-row">
+          <div class="event-name">onboarding_done</div>
+          <div class="event-right"><div class="event-count">18.1k</div><div class="event-bar-mini"><div class="event-bar-fill" style="width:6%;animation-delay:0.65s"></div></div></div>
+        </div>
+        <div class="event-row">
+          <div class="event-name">purchase</div>
+          <div class="event-right"><div class="event-count">3.4k</div><div class="event-bar-mini"><div class="event-bar-fill" style="width:1.5%;animation-delay:0.7s"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Dispositivos</div>
+        <div class="card-tag">Sessões</div>
+      </div>
+      <div class="device-list">
+        <div class="device-item">
+          <div class="device-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+          <div class="device-info">
+            <div class="device-name">Mobile <span>58% · 54.7k</span></div>
+            <div class="device-track"><div class="device-fill" style="width:100%;background:var(--accent);animation-delay:0.5s;"></div></div>
+          </div>
+        </div>
+        <div class="device-item">
+          <div class="device-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <div class="device-info">
+            <div class="device-name">Desktop <span>32% · 30.2k</span></div>
+            <div class="device-track"><div class="device-fill" style="width:55%;background:var(--accent2);animation-delay:0.6s;"></div></div>
+          </div>
+        </div>
+        <div class="device-item">
+          <div class="device-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+          <div class="device-info">
+            <div class="device-name">Tablet <span>10% · 9.4k</span></div>
+            <div class="device-track"><div class="device-fill" style="width:17%;background:var(--accent3);animation-delay:0.7s;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px;">
+        <svg class="device-bar-svg" viewBox="0 0 200 10" width="100%" height="10" style="border-radius:5px;overflow:hidden;display:block;">
+          <rect x="0"   y="0" width="116" height="10" fill="var(--accent)"/>
+          <rect x="118" y="0" width="64"  height="10" fill="var(--accent2)"/>
+          <rect x="184" y="0" width="16"  height="10" fill="var(--accent3)"/>
+        </svg>
+        <div style="display:flex;gap:14px;margin-top:10px;">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Mobile</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div>Desktop</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent3)"></div>Tablet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Retenção por Cohort</div>
+        <div class="card-tag">Semanas</div>
+      </div>
+      <div class="heatmap-wrap">
+        <div class="heatmap-grid" id="heatmap"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ─── DATASET PER PERIOD ───────────────────────────
+const PERIODS = {
+  '7d': {
+    label: 'últimos 7 dias',
+    subtitle: 'Fev 22–28, 2025 · dados atualizados há 3 min',
+    kpi: [
+      { target: 6840,  prefix: '',   suffix: '',  delta: '↑ 5.2%',  dir: 'up',   note: 'vs semana anterior' },
+      { target: 21450, prefix: '',   suffix: '',  delta: '↑ 3.8%',  dir: 'up',   note: 'vs semana anterior' },
+      { target: 4.1,   prefix: '',   suffix: '%', delta: '↑ 0.4pp', dir: 'up',   note: 'vs semana anterior' },
+      { target: 10900, prefix: 'R$', suffix: '',  delta: '↑ 7.3%',  dir: 'up',   note: 'vs semana anterior' },
+    ],
+    chartDays: 7,
+    chartLabels: ['Seg','','','Qui','','','Dom'],
+    chartBase: 2800, chartTrend: 120, chartNoise: 300,
+    chartSpikes: { 2: 400, 5: 320 },
+    chartUnit: 'sessões',
+    funnel: [
+      { label: 'Visitantes', pct: 100,  bar: '100%', opacity: 1,   color: null },
+      { label: 'Cadastro',   pct: 65,   bar: '65%',  opacity: 0.8, color: null },
+      { label: 'Ativação',   pct: 34,   bar: '34%',  opacity: 0.6, color: null },
+      { label: 'Pagante',    pct: 4.1,  bar: '10%',  opacity: 1,   color: 'var(--danger)' },
+    ],
+    dropoff: { value: '66%', label: 'Cadastro → Ativação' },
+    events: [
+      { name: 'page_view',      count: '63.2k', pct: 100 },
+      { name: 'btn_click',      count: '22.1k', pct: 35 },
+      { name: 'signup_start',   count: '13.8k', pct: 22 },
+      { name: 'onboarding_done',count: '4.2k',  pct: 7 },
+      { name: 'purchase',       count: '810',   pct: 1.3 },
+    ],
+    devices: [
+      { label: 'Mobile',  pct: 61, count: '13.1k', barPct: 100, barColor: 'var(--accent)' },
+      { label: 'Desktop', pct: 29, count: '6.2k',  barPct: 48,  barColor: 'var(--accent2)' },
+      { label: 'Tablet',  pct: 10, count: '2.1k',  barPct: 16,  barColor: 'var(--accent3)' },
+    ],
+    deviceBar: [122, 58, 20],
+    heatmap: {
+      cohorts: ['Fev/3','Fev/10','Fev/17','Fev/22','Fev/24','Fev/26'],
+      data: [
+        [100,64,50,43,36,31,28,25],
+        [100,61,47,40,34,29,26,null],
+        [100,66,52,44,38,33,null,null],
+        [100,63,49,null,null,null,null,null],
+        [100,60,null,null,null,null,null,null],
+        [100,null,null,null,null,null,null,null],
+      ]
+    }
+  },
+  '30d': {
+    label: 'últimos 30 dias',
+    subtitle: 'Janeiro 2025 · dados atualizados há 3 min',
+    kpi: [
+      { target: 28410, prefix: '',   suffix: '',  delta: '↑ 12.4%', dir: 'up',   note: 'vs mês anterior' },
+      { target: 94302, prefix: '',   suffix: '',  delta: '↑ 8.1%',  dir: 'up',   note: 'vs mês anterior' },
+      { target: 3.7,   prefix: '',   suffix: '%', delta: '↓ 0.3pp', dir: 'down', note: 'vs mês anterior' },
+      { target: 47200, prefix: 'R$', suffix: '',  delta: '↑ 21.7%', dir: 'up',   note: 'vs mês anterior' },
+    ],
+    chartDays: 30,
+    chartLabels: ['1 Jan','','','','5','','','','9','','','','13','','15','','','','19','','','','23','','','','27','','','30'],
+    chartBase: 2000, chartTrend: 80, chartNoise: 500,
+    chartSpikes: { 14: 850, 22: 550 },
+    chartUnit: 'sessões',
+    funnel: [
+      { label: 'Visitantes', pct: 100,  bar: '100%', opacity: 1,   color: null },
+      { label: 'Cadastro',   pct: 62,   bar: '62%',  opacity: 0.8, color: null },
+      { label: 'Ativação',   pct: 31,   bar: '31%',  opacity: 0.6, color: null },
+      { label: 'Pagante',    pct: 3.7,  bar: '9%',   opacity: 1,   color: 'var(--danger)' },
+    ],
+    dropoff: { value: '69%', label: 'Cadastro → Ativação' },
+    events: [
+      { name: 'page_view',      count: '284.1k', pct: 100 },
+      { name: 'btn_click',      count: '97.3k',  pct: 34 },
+      { name: 'signup_start',   count: '58.4k',  pct: 21 },
+      { name: 'onboarding_done',count: '18.1k',  pct: 6 },
+      { name: 'purchase',       count: '3.4k',   pct: 1.5 },
+    ],
+    devices: [
+      { label: 'Mobile',  pct: 58, count: '54.7k', barPct: 100, barColor: 'var(--accent)' },
+      { label: 'Desktop', pct: 32, count: '30.2k', barPct: 55,  barColor: 'var(--accent2)' },
+      { label: 'Tablet',  pct: 10, count: '9.4k',  barPct: 17,  barColor: 'var(--accent3)' },
+    ],
+    deviceBar: [116, 64, 16],
+    heatmap: {
+      cohorts: ['Jan/1','Jan/8','Jan/15','Jan/22','Fev/1','Fev/8'],
+      data: [
+        [100,62,48,41,35,30,27,24],
+        [100,58,44,38,32,28,25,null],
+        [100,65,51,43,37,32,null,null],
+        [100,60,46,39,34,null,null,null],
+        [100,63,49,null,null,null,null,null],
+        [100,59,null,null,null,null,null,null],
+      ]
+    }
+  },
+  '90d': {
+    label: 'últimos 90 dias',
+    subtitle: 'Out–Dez 2024 · dados atualizados há 3 min',
+    kpi: [
+      { target: 74800, prefix: '',   suffix: '',  delta: '↑ 34.6%', dir: 'up',   note: 'vs trimestre anterior' },
+      { target: 261500,prefix: '',   suffix: '',  delta: '↑ 28.2%', dir: 'up',   note: 'vs trimestre anterior' },
+      { target: 3.2,   prefix: '',   suffix: '%', delta: '↓ 1.1pp', dir: 'down', note: 'vs trimestre anterior' },
+      { target: 118400,prefix: 'R$', suffix: '',  delta: '↑ 43.5%', dir: 'up',   note: 'vs trimestre anterior' },
+    ],
+    chartDays: 90,
+    chartLabels: Array.from({length:90},(_,i) => i===0?'Out':i===30?'Nov':i===60?'Dez':i===89?'31':''),
+    chartBase: 1400, chartTrend: 30, chartNoise: 400,
+    chartSpikes: { 12: 700, 31: 900, 45: 500, 62: 1100, 80: 650 },
+    chartUnit: 'sessões',
+    funnel: [
+      { label: 'Visitantes', pct: 100, bar: '100%', opacity: 1,   color: null },
+      { label: 'Cadastro',   pct: 58,  bar: '58%',  opacity: 0.8, color: null },
+      { label: 'Ativação',   pct: 27,  bar: '27%',  opacity: 0.6, color: null },
+      { label: 'Pagante',    pct: 3.2, bar: '8%',   opacity: 1,   color: 'var(--danger)' },
+    ],
+    dropoff: { value: '72%', label: 'Cadastro → Ativação' },
+    events: [
+      { name: 'page_view',      count: '812.4k', pct: 100 },
+      { name: 'btn_click',      count: '271.8k', pct: 33 },
+      { name: 'signup_start',   count: '154.9k', pct: 19 },
+      { name: 'onboarding_done',count: '44.3k',  pct: 5 },
+      { name: 'purchase',       count: '8.4k',   pct: 1 },
+    ],
+    devices: [
+      { label: 'Mobile',  pct: 55, count: '143.8k', barPct: 100, barColor: 'var(--accent)' },
+      { label: 'Desktop', pct: 35, count: '91.5k',  barPct: 64,  barColor: 'var(--accent2)' },
+      { label: 'Tablet',  pct: 10, count: '26.2k',  barPct: 18,  barColor: 'var(--accent3)' },
+    ],
+    deviceBar: [110, 70, 20],
+    heatmap: {
+      cohorts: ['Out/1','Out/15','Nov/1','Nov/15','Dez/1','Dez/15'],
+      data: [
+        [100,55,42,36,30,25,22,19],
+        [100,52,39,33,27,22,19,null],
+        [100,58,44,37,31,26,null,null],
+        [100,54,41,34,28,null,null,null],
+        [100,57,43,null,null,null,null,null],
+        [100,53,null,null,null,null,null,null],
+      ]
+    }
+  }
+};
+
+let currentPeriod = '30d';
+
+// ─── COUNTER ANIMATION ────────────────────────────
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  const isFloat = String(target).includes('.');
+  const duration = 1100;
+  const start = performance.now();
+  function fmt(n) {
+    if (isFloat) return prefix + n.toFixed(1) + suffix;
+    if (n >= 1000) return prefix + Math.round(n).toLocaleString('pt-BR') + suffix;
+    return prefix + Math.round(n) + suffix;
+  }
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 4);
+    el.textContent = fmt(target * ease);
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = fmt(target);
+  }
+  requestAnimationFrame(step);
+}
+
+// ─── UPDATE KPIs ──────────────────────────────────
+function updateKPIs(p) {
+  const cards = document.querySelectorAll('.kpi-card');
+  p.kpi.forEach((k, i) => {
+    const card = cards[i];
+    const valEl = card.querySelector('.kpi-value');
+    const deltaEl = card.querySelector('.kpi-delta');
+    valEl.dataset.target = k.target;
+    valEl.dataset.prefix = k.prefix;
+    valEl.dataset.suffix = k.suffix;
+    valEl.textContent = '0';
+    animateCounter(valEl);
+    deltaEl.textContent = `${k.delta} ${k.note}`;
+    deltaEl.className = 'kpi-delta ' + k.dir;
+  });
+  document.querySelector('.header-sub').textContent = p.subtitle;
+  document.querySelector('.card-tag').textContent = p.label.replace('últimos ','');
+}
+
+// ─── UPDATE FUNNEL ────────────────────────────────
+function updateFunnel(p) {
+  const rows = document.querySelectorAll('.funnel-row');
+  p.funnel.forEach((f, i) => {
+    const bar = rows[i].querySelector('.funnel-bar');
+    const pct = rows[i].querySelector('.funnel-pct');
+    bar.style.width = f.bar;
+    bar.style.opacity = f.opacity;
+    bar.style.background = f.color || 'var(--accent)';
+    // re-trigger animation
+    bar.style.transform = 'scaleX(0)';
+    bar.style.transition = 'none';
+    requestAnimationFrame(() => {
+      bar.style.transition = '';
+      bar.style.transform = '';
+      bar.style.animation = 'none';
+      requestAnimationFrame(() => { bar.style.animation = ''; });
+    });
+    pct.textContent = f.pct + (String(f.pct).includes('.') ? '%' : '%');
+  });
+  const dropVal = document.querySelector('.dropoff-value');
+  const dropLbl = document.querySelector('.dropoff-label');
+  if (dropVal) { dropVal.textContent = p.dropoff.value; }
+  if (dropLbl) { dropLbl.textContent = p.dropoff.label; }
+}
+
+// ─── UPDATE EVENTS ────────────────────────────────
+function updateEvents(p) {
+  const rows = document.querySelectorAll('.event-row');
+  p.events.forEach((e, i) => {
+    const row = rows[i];
+    row.querySelector('.event-name').textContent = e.name;
+    row.querySelector('.event-count').textContent = e.count;
+    const fill = row.querySelector('.event-bar-fill');
+    fill.style.width = e.pct + '%';
+    fill.style.animation = 'none';
+    requestAnimationFrame(() => {
+      fill.style.animation = '';
+      fill.style.transform = 'scaleX(0)';
+      requestAnimationFrame(() => { fill.style.transform = ''; });
+    });
+  });
+}
+
+// ─── UPDATE DEVICES ───────────────────────────────
+function updateDevices(p) {
+  const items = document.querySelectorAll('.device-item');
+  p.devices.forEach((d, i) => {
+    const nameEl = items[i].querySelector('.device-name');
+    nameEl.childNodes[0].textContent = d.label + ' ';
+    nameEl.querySelector('span').textContent = `${d.pct}% · ${d.count}`;
+    const fill = items[i].querySelector('.device-fill');
+    fill.style.width = d.barPct + '%';
+    fill.style.background = d.barColor;
+    fill.style.animation = 'none';
+    requestAnimationFrame(() => {
+      fill.style.animation = '';
+      fill.style.transform = 'scaleX(0)';
+      requestAnimationFrame(() => { fill.style.transform = ''; });
+    });
+  });
+  const [mb, db, tb] = p.deviceBar;
+  const total = mb + db + tb;
+  const barSvg = document.querySelector('.device-bar-svg');
+  if (barSvg) {
+    const rects = barSvg.querySelectorAll('rect');
+    let x = 0;
+    [mb, db, tb].forEach((v, i) => {
+      rects[i].setAttribute('x', x);
+      rects[i].setAttribute('width', v);
+      x += v + 2;
+    });
+  }
+}
+
+// ─── UPDATE HEATMAP ───────────────────────────────
+function buildHeatmap(p) {
+  const container = document.getElementById('heatmap');
+  container.innerHTML = '';
+  const weeks = ['W1','W2','W3','W4','W5','W6','W7','W8'];
+  function color(v) {
+    if (v >= 90) return '#0F1A3E';
+    if (v >= 70) return '#1D3AB8';
+    if (v >= 50) return '#2351F5';
+    if (v >= 35) return '#5580FF';
+    if (v >= 25) return '#93AFFF';
+    return '#C7D5FF';
+  }
+  const blank = document.createElement('div');
+  blank.className = 'hm-cell header';
+  container.appendChild(blank);
+  weeks.forEach(w => {
+    const c = document.createElement('div');
+    c.className = 'hm-cell header'; c.textContent = w;
+    container.appendChild(c);
+  });
+  p.heatmap.cohorts.forEach((cohort, ci) => {
+    const lbl = document.createElement('div');
+    lbl.className = 'hm-cell row-label'; lbl.textContent = cohort;
+    container.appendChild(lbl);
+    weeks.forEach((_, wi) => {
+      const val = p.heatmap.data[ci][wi];
+      const c = document.createElement('div');
+      if (val !== null) {
+        c.className = 'hm-cell data';
+        c.textContent = val + '%';
+        c.style.background = color(val);
+        c.style.animationDelay = (0.1 + ci*0.05 + wi*0.03) + 's';
+        c.title = `Cohort ${cohort}, ${weeks[wi]}: ${val}%`;
+      } else {
+        c.className = 'hm-cell'; c.style.background = 'transparent';
+      }
+      container.appendChild(c);
+    });
+  });
+}
+
+// ─── SESSIONS CHART ───────────────────────────────
+function buildChart(p) {
+  const svg = document.getElementById('sessions-svg');
+  svg.innerHTML = '';
+  const W = 600, H = 210;
+  const pad = { top: 20, right: 12, bottom: 32, left: 44 };
+  const iW = W - pad.left - pad.right;
+  const iH = H - pad.top - pad.bottom;
+
+  const seed = p.chartDays;
+  const data = Array.from({length: p.chartDays}, (_, i) => {
+    const trend = p.chartBase + i * p.chartTrend;
+    const noise = (Math.sin(i * 2.3 + seed) * 0.5) * p.chartNoise;
+    const spike = p.chartSpikes[i] || 0;
+    return Math.max(p.chartBase * 0.6, Math.round(trend + noise + spike));
+  });
+
+  const labels = p.chartLabels;
+  const minV = Math.min(...data) - Math.round(p.chartNoise * 0.6);
+  const maxV = Math.max(...data) + Math.round(p.chartNoise * 0.6);
+  const xS = i => pad.left + (i / (data.length - 1)) * iW;
+  const yS = v => pad.top + iH - ((v - minV) / (maxV - minV)) * iH;
+
+  [0, .25, .5, .75, 1].forEach(t => {
+    const y = pad.top + iH * (1 - t);
+    const v = Math.round(minV + t * (maxV - minV));
+    const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    l.setAttribute('x1', pad.left); l.setAttribute('x2', W - pad.right);
+    l.setAttribute('y1', y); l.setAttribute('y2', y);
+    l.setAttribute('stroke', '#DDE4F5'); l.setAttribute('stroke-width', '1');
+    svg.appendChild(l);
+    const tx = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    tx.setAttribute('x', pad.left - 6); tx.setAttribute('y', y + 4);
+    tx.setAttribute('text-anchor', 'end'); tx.setAttribute('class', 'axis-label');
+    tx.textContent = v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v;
+    svg.appendChild(tx);
+  });
+
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  const grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+  grad.setAttribute('id', 'aG'); grad.setAttribute('x1', '0'); grad.setAttribute('y1', '0');
+  grad.setAttribute('x2', '0'); grad.setAttribute('y2', '1');
+  const s1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+  s1.setAttribute('offset', '0%'); s1.setAttribute('stop-color', '#2351F5'); s1.setAttribute('stop-opacity', '0.15');
+  const s2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+  s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', '#2351F5'); s2.setAttribute('stop-opacity', '0');
+  grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad); svg.appendChild(defs);
+
+  let ap = `${xS(0)},${yS(data[0])}`;
+  data.forEach((v, i) => { ap += ` ${xS(i)},${yS(v)}`; });
+  ap += ` ${xS(data.length - 1)},${H - pad.bottom} ${xS(0)},${H - pad.bottom}`;
+  const area = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  area.setAttribute('points', ap); area.setAttribute('fill', 'url(#aG)');
+  svg.appendChild(area);
+
+  let d = `M ${xS(0)} ${yS(data[0])}`;
+  data.forEach((v, i) => {
+    if (!i) return;
+    const x0 = xS(i - 1), y0 = yS(data[i - 1]), x1 = xS(i), y1 = yS(v), cx = (x0 + x1) / 2;
+    d += ` C ${cx} ${y0} ${cx} ${y1} ${x1} ${y1}`;
+  });
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', d); path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', '#2351F5'); path.setAttribute('stroke-width', '2.5');
+  path.style.strokeDasharray = '3000';
+  path.style.strokeDashoffset = '3000';
+  path.style.transition = 'stroke-dashoffset 1.3s cubic-bezier(.22,1,.36,1) 0.1s';
+  svg.appendChild(path);
+  setTimeout(() => { path.style.strokeDashoffset = 0; }, 50);
+
+  const tooltip = document.getElementById('tooltip');
+  const wrapper = document.querySelector('.chart-wrapper');
+
+  data.forEach((v, i) => {
+    if (labels[i]) {
+      const tx = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      tx.setAttribute('x', xS(i)); tx.setAttribute('y', H - 8);
+      tx.setAttribute('text-anchor', 'middle'); tx.setAttribute('class', 'axis-label');
+      tx.textContent = labels[i]; svg.appendChild(tx);
+    }
+    const xp = xS(i);
+    const hit = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    hit.setAttribute('x', xp - iW / data.length / 2);
+    hit.setAttribute('y', pad.top);
+    hit.setAttribute('width', iW / data.length);
+    hit.setAttribute('height', iH);
+    hit.setAttribute('fill', 'transparent');
+    hit.style.cursor = 'crosshair';
+    hit.addEventListener('mouseenter', () => {
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', xp); dot.setAttribute('cy', yS(v));
+      dot.setAttribute('r', '5'); dot.setAttribute('fill', '#2351F5');
+      dot.setAttribute('stroke', '#fff'); dot.setAttribute('stroke-width', '2.5');
+      dot.id = 'hover-dot'; svg.appendChild(dot);
+      const sR = svg.getBoundingClientRect(), wR = wrapper.getBoundingClientRect();
+      tooltip.style.left = (sR.left - wR.left + (xp / W) * sR.width + 10) + 'px';
+      tooltip.style.top = (sR.top - wR.top + (yS(v) / H) * sR.height - 30) + 'px';
+      tooltip.textContent = v.toLocaleString('pt-BR') + ' sessões';
+      tooltip.style.opacity = 1;
+    });
+    hit.addEventListener('mouseleave', () => {
+      document.getElementById('hover-dot')?.remove();
+      tooltip.style.opacity = 0;
+    });
+    svg.appendChild(hit);
+  });
+}
+
+// ─── APPLY PERIOD ────────────────────────────────
+function applyPeriod(key) {
+  const p = PERIODS[key];
+  currentPeriod = key;
+  updateKPIs(p);
+  updateFunnel(p);
+  updateEvents(p);
+  updateDevices(p);
+  buildChart(p);
+  buildHeatmap(p);
+}
+
+// ─── PERIOD BUTTONS ───────────────────────────────
+document.querySelectorAll('.period-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    applyPeriod(this.textContent.trim());
+  });
+});
+
+setTimeout(() => {
+  document.querySelectorAll('.kpi-value[data-target]').forEach(animateCounter);
+}, 250);
+
+// ─── INIT ─────────────────────────────────────────
+buildChart(PERIODS['30d']);
+buildHeatmap(PERIODS['30d']);
+</script>
+
+</script>
+</body>
+</html>

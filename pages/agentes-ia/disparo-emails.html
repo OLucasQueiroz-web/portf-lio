@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disparo Inteligente de E-mails · Lucas Queiroz</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f2f3f5; --surface: #ffffff; --border: #dde0e6;
+  --text: #141820; --muted: #8a91a0;
+  --navy: #1a2f5e;
+  --accent: #16a34a; --accent-pale: #e8f5ee;
+  --font: "Poppins", sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(242,243,245,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 64px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-size: 14px; font-weight: 700; color: var(--navy); text-decoration: none; }
+.nav-logo span { color: var(--muted); font-weight: 400; }
+.nav-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  text-decoration: none; transition: color 0.2s;
+}
+.nav-back:hover { color: var(--navy); }
+.nav-back:hover svg { transform: translateX(-3px); }
+.nav-back svg { transition: transform 0.2s; }
+
+.page-header {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 64px 64px 56px;
+}
+.cat-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent-pale); color: var(--accent);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 100px; margin-bottom: 20px;
+}
+.page-title {
+  font-size: clamp(28px, 4vw, 50px); font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; max-width: 640px;
+}
+.page-sub { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 520px; }
+
+.video-section { padding: 56px 64px 0; }
+.section-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 10px;
+}
+.section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); margin-bottom: 28px; }
+
+.video-container {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+}
+.video-placeholder { padding-bottom: 56.25%; position: relative; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%); }
+.video-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+  background-size: 40px 40px;
+}
+.video-placeholder-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+.play-btn {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(22,163,74,0.9);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s, background 0.2s; cursor: pointer;
+}
+.play-btn:hover { transform: scale(1.08); background: var(--accent); }
+.video-label { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.45); }
+.video-container video {
+  width: 100%; display: block; border-radius: 20px;
+}
+
+.content { padding: 56px 64px 0; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 52px 0 0; }
+
+.flow { display: flex; flex-direction: column; margin-top: 32px; }
+.flow-item { display: grid; grid-template-columns: 44px 1fr; position: relative; }
+.flow-item:not(:last-child)::after {
+  content: ''; position: absolute;
+  left: 21px; top: 44px; bottom: 0; width: 2px; background: var(--border);
+}
+.flow-num {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--accent-pale); border: 2px solid rgba(22,163,74,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--accent);
+  flex-shrink: 0; position: relative; z-index: 1;
+}
+.flow-body { padding: 10px 0 40px 24px; }
+.flow-title { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+.flow-desc { font-size: 14px; color: var(--muted); line-height: 1.8; }
+
+.teaser {
+  background: var(--navy); border-radius: 20px;
+  padding: 40px 44px; margin-top: 32px;
+  display: flex; align-items: center; gap: 32px;
+  position: relative; overflow: hidden;
+}
+.teaser::before { content:''; position:absolute; right:-40px; top:-40px; width:200px; height:200px; border-radius:50%; background:rgba(22,163,74,0.1); }
+.teaser::after { content:''; position:absolute; right:40px; bottom:-60px; width:140px; height:140px; border-radius:50%; background:rgba(22,163,74,0.06); }
+.teaser-icon {
+  flex-shrink:0; width:60px; height:60px; border-radius:16px;
+  background:rgba(22,163,74,0.12); border:1px solid rgba(22,163,74,0.2);
+  display:flex; align-items:center; justify-content:center; position:relative; z-index:1;
+}
+.teaser-body { position:relative; z-index:1; }
+.teaser-eyebrow { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#4ade80; margin-bottom:8px; }
+.teaser-title { font-size:20px; font-weight:700; color:#fff; margin-bottom:8px; letter-spacing:-0.02em; }
+.teaser-desc { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.7; }
+.teaser-badge {
+  margin-left:auto; flex-shrink:0; position:relative; z-index:1;
+  background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12);
+  border-radius:100px; padding:6px 16px;
+  font-size:12px; font-weight:500; color:rgba(255,255,255,0.4);
+  display:flex; align-items:center; gap:7px;
+}
+.badge-dot { width:6px; height:6px; border-radius:50%; background:#eab308; animation:blink 1.4s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:0.3} }
+
+.section-desc { font-size: 14px; color: var(--muted); line-height: 1.8; max-width: 560px; }
+
+.n8n-img-wrap {
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+}
+.n8n-img-wrap img { width: 100%; display: block; transition: transform 0.4s ease; }
+.n8n-img-wrap:hover img { transform: scale(1.01); }
+
+footer {
+  background: #0d1626; padding: 24px 64px; margin-top: 80px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: rgba(255,255,255,0.22);
+}
+footer strong { color: rgba(255,255,255,0.45); font-weight: 500; }
+
+.fu { opacity: 0; transform: translateY(18px); transition: opacity 0.55s ease, transform 0.55s cubic-bezier(.22,1,.36,1); }
+.fu.in { opacity: 1; transform: none; }
+
+@media(max-width:768px){
+  nav { padding: 0 20px; }
+  .page-header, .video-section, .content { padding-left: 20px; padding-right: 20px; }
+  .teaser { flex-direction: column; align-items: flex-start; padding: 28px 24px; gap: 20px; }
+  .teaser-badge { margin-left: 0; }
+  footer { padding: 20px; flex-direction: column; gap: 6px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html" class="nav-logo">Lucas Queiroz <span>· One Percent</span></a>
+  <a href="agentes-ia.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+    Voltar
+  </a>
+</nav>
+
+<div class="page-header fu">
+  <div class="cat-badge">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+    Agentes de IA · 2025
+  </div>
+  <h1 class="page-title">Disparo Inteligente de E-mails</h1>
+  <p class="page-sub">Sistema de prospecção que encontra empresas, extrai contatos e dispara e-mails personalizados — do zero até o envio, sem intervenção manual.</p>
+</div>
+
+<div class="video-section fu">
+  <p class="section-eyebrow">Demonstração</p>
+  <h2 class="section-title">Veja o sistema em ação</h2>
+  <div class="video-container">
+    <video controls preload="metadata">
+      <source src="../../assets/agentes-ia/disparo-emails/extrair-contatos.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<div class="content fu">
+  <hr class="divider">
+  <p class="section-eyebrow" style="margin-top:52px;">Como funciona</p>
+  <h2 class="section-title">Do contato ao envio em 4 etapas</h2>
+
+  <div class="flow">
+
+    <div class="flow-item">
+      <div class="flow-num">1</div>
+      <div class="flow-body">
+        <div class="flow-title">Busca de empresas no Google Maps</div>
+        <div class="flow-desc">O usuário informa um segmento e cidade. O sistema varre o Google Maps automaticamente, coletando nome, telefone e site de cada empresa encontrada — filtrando resultados que não têm potencial de contato direto.</div>
+      </div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-num">2</div>
+      <div class="flow-body">
+        <div class="flow-title">Extração de e-mails dos sites</div>
+        <div class="flow-desc">Para cada empresa com site, o sistema acessa as páginas de contato e extrai os endereços de e-mail disponíveis. O processo é automático e inclui correção inteligente de erros comuns nos e-mails encontrados.</div>
+      </div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-num">3</div>
+      <div class="flow-body">
+        <div class="flow-title">Armazenamento dos leads no Supabase</div>
+        <div class="flow-desc">Todos os contatos ficam salvos no Supabase, com controle de quem já recebeu e-mail e quem ainda está pendente. Nenhum contato é enviado duas vezes.</div>
+      </div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-num">4</div>
+      <div class="flow-body">
+        <div class="flow-title">Disparo agendado e personalizado</div>
+        <div class="flow-desc">O usuário escolhe quando enviar — imediatamente ou em data e hora específica. Cada e-mail sai com o nome da empresa na mensagem, de forma automática, com intervalo entre envios para proteger a conta.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="content fu">
+  <hr class="divider">
+  <p class="section-eyebrow" style="margin-top:52px;">Parte 2</p>
+  <h2 class="section-title">Fluxo de disparo via n8n</h2>
+  <p class="section-desc" style="margin-bottom:32px;">Com os leads no banco, o n8n assume. Todo dia às 6h ele acorda sozinho, pega os contatos pendentes e dispara os e-mails — sem ninguém precisar apertar nada.</p>
+
+  <!-- IMAGEM DO FLUXO -->
+  <div class="n8n-img-wrap fu">
+    <img src="../../assets/agentes-ia/disparo-emails/n8n.webp" alt="Fluxo n8n de disparo de e-mails" />
+  </div>
+
+  <!-- ETAPAS DO N8N -->
+  <div class="flow" style="margin-top:40px;">
+
+    <div class="flow-item">
+      <div class="flow-num">1</div>
+      <div class="flow-body">
+        <div class="flow-title">Agendamento automático</div>
+        <div class="flow-desc">Todo dia às 6h da manhã o fluxo dispara sozinho. Nenhuma intervenção manual necessária.</div>
+      </div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-num">2</div>
+      <div class="flow-body">
+        <div class="flow-title">Leitura dos leads pendentes</div>
+        <div class="flow-desc">O sistema busca no Supabase todos os contatos que ainda não receberam e-mail, processando até 450 por execução.</div>
+      </div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-num">3</div>
+      <div class="flow-body">
+        <div class="flow-title">Limpeza do nome da empresa</div>
+        <div class="flow-desc">Antes de usar o nome no e-mail, uma IA trata o texto — removendo sufixos e ruídos do Google Maps para que o nome apareça limpo e profissional na mensagem.</div>
+      </div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-num">4</div>
+      <div class="flow-body">
+        <div class="flow-title">Geração da mensagem por IA</div>
+        <div class="flow-desc">Uma segunda IA escreve o e-mail personalizado para cada empresa — com o nome certo, linguagem direta e sem parecer disparo em massa.</div>
+      </div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-num">5</div>
+      <div class="flow-body">
+        <div class="flow-title">Envio e remoção do pendente</div>
+        <div class="flow-desc">O e-mail é enviado via Gmail. Depois do envio, o contato sai da fila automaticamente — garantindo que ninguém receba duas vezes.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <span>© 2025 <strong>Lucas Queiroz</strong> · One Percent</span>
+  <span>Uberlândia, MG · Brasil</span>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add("in"), i * 80);
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll(".fu").forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

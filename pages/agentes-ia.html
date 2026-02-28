@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentes de IA · Lucas Queiroz</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f2f3f5; --surface: #ffffff; --border: #dde0e6;
+  --text: #141820; --muted: #8a91a0;
+  --navy: #1a2f5e; --navy-light: #2a4580; --navy-pale: #e8ecf5;
+  --accent: #16a34a; --accent-pale: #e8f5ee;
+  --font: "Poppins", sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(242,243,245,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 64px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-size: 14px; font-weight: 700; color: var(--navy); text-decoration: none; }
+.nav-logo span { color: var(--muted); font-weight: 400; }
+.nav-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  text-decoration: none; transition: color 0.2s;
+}
+.nav-back:hover { color: var(--navy); }
+.nav-back svg { transition: transform 0.2s; }
+.nav-back:hover svg { transform: translateX(-3px); }
+
+.page-header {
+  padding: 64px 64px 48px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.cat-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent-pale); color: var(--accent);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 100px; margin-bottom: 20px;
+}
+.page-title {
+  font-size: clamp(30px, 4vw, 52px); font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 14px;
+}
+.page-sub { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 520px; }
+
+/* DISCLAIMER BANNER */
+.disclaimer {
+  margin: 0 64px;
+  margin-top: 40px;
+  border-radius: 12px;
+  border: 1px solid #e5c97e;
+  background: #fffbec;
+  padding: 18px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.disclaimer-icon {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  background: #fef3c7;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.disclaimer-text { flex: 1; }
+.disclaimer-title {
+  font-size: 13px; font-weight: 600; color: #92400e;
+  margin-bottom: 4px;
+}
+.disclaimer-desc {
+  font-size: 12px; color: #a16207; line-height: 1.65;
+}
+
+.projects-section { padding: 40px 64px 64px; flex: 1; }
+.prj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+.prj-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  text-decoration: none; color: inherit; display: block;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.prj-card:hover { transform: translateY(-4px); box-shadow: 0 24px 56px rgba(0,0,0,0.07); border-color: var(--accent); }
+.prj-thumb {
+  height: 200px; background: var(--accent-pale);
+  display: flex; align-items: center; justify-content: center;
+}
+.prj-thumb-inner {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  display: flex; align-items: center; justify-content: center;
+}
+.prj-body { padding: 26px 28px; }
+.prj-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.prj-cat {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--accent); background: var(--accent-pale); padding: 4px 10px; border-radius: 100px;
+}
+.prj-year { font-size: 12px; color: var(--muted); }
+.prj-name { font-size: 19px; font-weight: 600; margin-bottom: 10px; letter-spacing: -0.01em; }
+.prj-desc { font-size: 13px; line-height: 1.8; color: var(--muted); margin-bottom: 20px; }
+.prj-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--accent);
+}
+.prj-cta svg { transition: transform 0.2s; }
+.prj-card:hover .prj-cta svg { transform: translate(2px, -2px); }
+
+.empty-state {
+  grid-column: span 2; text-align: center; padding: 80px 40px;
+  border: 1px dashed var(--border); border-radius: 16px; background: var(--surface);
+}
+.empty-icon {
+  width: 56px; height: 56px; border-radius: 14px; background: var(--accent-pale);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
+}
+.empty-title { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+.empty-desc { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 320px; margin: 0 auto; }
+
+footer {
+  background: #0d1626; padding: 24px 64px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: rgba(255,255,255,0.22);
+}
+footer strong { color: rgba(255,255,255,0.45); font-weight: 500; }
+
+.fu { opacity: 0; transform: translateY(18px); transition: opacity 0.55s ease, transform 0.55s cubic-bezier(.22,1,.36,1); }
+.fu.in { opacity: 1; transform: none; }
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@media(max-width:768px){
+  nav { padding: 0 20px; }
+  .page-header { padding: 40px 20px 32px; }
+  .disclaimer { margin: 0 20px; margin-top: 28px; }
+  .projects-section { padding: 28px 20px 48px; }
+  .prj-grid { grid-template-columns: 1fr; }
+  .empty-state { grid-column: span 1; }
+  footer { padding: 20px; flex-direction: column; gap: 6px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Lucas Queiroz <span>· One Percent</span></a>
+  <a href="../index.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+    Voltar ao portfólio
+  </a>
+</nav>
+
+<div class="page-header">
+  <div class="cat-badge fu">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+    Agentes de IA
+  </div>
+  <h1 class="page-title fu">Agentes de IA</h1>
+  <p class="page-sub fu">Cases reais — com contexto, solução e resultado.</p>
+</div>
+
+<div class="disclaimer fu">
+  <div class="disclaimer-icon">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" stroke-linecap="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/>
+      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+  </div>
+  <div class="disclaimer-text">
+    <div class="disclaimer-title">Informações dos projetos são preservadas intencionalmente</div>
+    <div class="disclaimer-desc">Por trabalhar 100% em white label, nome do cliente, copy, nicho e detalhes que possam identificar o projeto final são alterados ou omitidos. O que está aqui reflete a estrutura, o raciocínio e o resultado — não a identidade do cliente.</div>
+  </div>
+</div>
+
+<section class="projects-section">
+  <div class="prj-grid">
+
+    <!-- PROJETO 1 -->
+    <a href="../pages/agentes-ia/disparo-emails.html" class="prj-card fu">
+      <div class="prj-thumb" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%); position: relative; overflow: hidden; align-items: center; justify-content: center; flex-direction: column; gap: 0;">
+
+        <!-- background grid lines -->
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:32px 32px;"></div>
+
+        <!-- floating email cards -->
+        <div style="position:absolute;top:20px;left:28px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;width:130px;transform:rotate(-4deg);backdrop-filter:blur(4px);">
+          <div style="width:60px;height:5px;background:rgba(255,255,255,0.25);border-radius:3px;margin-bottom:5px;"></div>
+          <div style="width:90px;height:4px;background:rgba(255,255,255,0.12);border-radius:3px;margin-bottom:3px;"></div>
+          <div style="width:70px;height:4px;background:rgba(255,255,255,0.08);border-radius:3px;"></div>
+        </div>
+        <div style="position:absolute;bottom:22px;right:24px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;width:120px;transform:rotate(3deg);backdrop-filter:blur(4px);">
+          <div style="width:50px;height:5px;background:rgba(255,255,255,0.2);border-radius:3px;margin-bottom:5px;"></div>
+          <div style="width:80px;height:4px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:3px;"></div>
+          <div style="width:55px;height:4px;background:rgba(255,255,255,0.06);border-radius:3px;"></div>
+        </div>
+
+        <!-- central content -->
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;">
+          <!-- ícone de envelope simples -->
+          <svg width="48" height="38" viewBox="0 0 48 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="46" height="36" rx="4" stroke="rgba(255,255,255,0.5)" stroke-width="2" fill="none"/>
+            <path d="M1 8l23 16L47 8" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          </svg>
+          <div style="font-size:13px;font-weight:600;letter-spacing:0.06em;color:rgba(255,255,255,0.6);text-transform:uppercase;">E-mail</div>
+        </div>
+
+      </div>
+      <div class="prj-body">
+        <div class="prj-meta">
+          <span class="prj-cat">Agentes de IA</span>
+          <span class="prj-year">2025</span>
+        </div>
+        <h3 class="prj-name">Disparo Inteligente de E-mails</h3>
+        <p class="prj-desc">Automação de prospecção que extrai contatos do Google Maps e envia e-mails personalizados para cada empresa, escalando abordagens estratégicas sem depender de envio manual.</p>
+        <div class="prj-cta">
+          Ver case
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- PROJETO 2 — Em Desenvolvimento -->
+    <div class="prj-card fu" style="cursor: default;">
+      <div class="prj-thumb" style="background: linear-gradient(135deg, #0a1a0f 0%, #0d2b18 60%, #064e26 100%); position: relative; overflow: hidden; align-items: center; justify-content: center; flex-direction: column; gap: 0;">
+
+        <!-- background grid lines -->
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:32px 32px;"></div>
+
+        <!-- floating chat bubbles -->
+        <div style="position:absolute;top:22px;left:26px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px 12px 12px 2px;padding:8px 14px;width:120px;transform:rotate(-2deg);">
+          <div style="width:70px;height:5px;background:rgba(255,255,255,0.22);border-radius:3px;margin-bottom:4px;"></div>
+          <div style="width:50px;height:4px;background:rgba(255,255,255,0.1);border-radius:3px;"></div>
+        </div>
+        <div style="position:absolute;bottom:24px;right:22px;background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.25);border-radius:12px 12px 2px 12px;padding:8px 14px;width:110px;transform:rotate(2deg);">
+          <div style="width:65px;height:5px;background:rgba(37,211,102,0.5);border-radius:3px;margin-bottom:4px;"></div>
+          <div style="width:45px;height:4px;background:rgba(37,211,102,0.25);border-radius:3px;"></div>
+        </div>
+
+        <!-- badge Em Desenvolvimento -->
+        <div style="position:absolute; top:14px; right:14px; background:#fef9c3; border:1px solid #fde047; border-radius:100px; padding:4px 12px; font-size:10px; font-weight:700; letter-spacing:0.06em; color:#854d0e; text-transform:uppercase; display:flex; align-items:center; gap:6px; z-index:10;">
+          <span style="width:5px;height:5px;background:#eab308;border-radius:50%;display:inline-block;animation:blink 1.4s ease-in-out infinite;"></span>
+          Em Desenvolvimento
+        </div>
+
+        <!-- central WhatsApp name -->
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:0;">
+          <div style="font-size:26px;font-weight:700;letter-spacing:-0.02em;color:rgba(255,255,255,0.85);font-family:'Poppins',sans-serif;">WhatsApp</div>
+        </div>
+
+      </div>
+      <div class="prj-body">
+        <div class="prj-meta">
+          <span class="prj-cat">Agentes de IA</span>
+          <span class="prj-year">2025</span>
+        </div>
+        <h3 class="prj-name">Atendimento Humanizado WhatsApp</h3>
+        <p class="prj-desc">Agente de IA treinado para conduzir conversas no WhatsApp com linguagem natural, memória de contexto e tomada de decisão em tempo real — respondendo dúvidas, qualificando leads e escalando para humano apenas quando necessário.</p>
+        <div class="prj-cta" style="color: var(--muted); font-weight: 500; gap: 7px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Em breve
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 <strong>Lucas Queiroz</strong> · One Percent</span>
+  <span>Uberlândia, MG · Brasil</span>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add("in"), i * 80);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll(".fu").forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucas Queiroz · One Percent</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f2f3f5;
+  --surface: #ffffff;
+  --border: #dde0e6;
+  --text: #141820;
+  --muted: #8a91a0;
+  --navy: #1a2f5e;
+  --navy-light: #2a4580;
+  --navy-pale: #e8ecf5;
+  --font: 'Poppins', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--font); overflow-x: hidden;
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(242,243,245,0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 64px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.nav-logo { font-size: 14px; font-weight: 700; color: var(--navy); text-decoration: none; }
+.nav-logo span { color: var(--muted); font-weight: 400; }
+.nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+.nav-links a { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--navy); }
+.nav-cta {
+  background: var(--navy) !important; color: #fff !important;
+  padding: 9px 20px; border-radius: 7px; font-weight: 600 !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--navy-light) !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 0 64px; padding-top: 64px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -200px; right: -100px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(26,47,94,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 680px; position: relative; z-index: 1; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--navy-pale); color: var(--navy);
+  font-size: 12px; font-weight: 500;
+  padding: 6px 14px; border-radius: 100px; margin-bottom: 36px;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: #22c55e;
+  animation: blink 2.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:0.35} }
+
+.hero-title {
+  font-size: clamp(38px, 4.8vw, 68px);
+  font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 24px;
+}
+.hero-title .accent { color: var(--navy); }
+
+.hero-sub {
+  font-size: 16px; font-weight: 400; line-height: 1.75;
+  color: var(--muted); max-width: 520px; margin-bottom: 44px;
+}
+
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--font); font-size: 14px; font-weight: 600;
+  padding: 13px 26px; border-radius: 8px; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: transform 0.15s, box-shadow 0.15s; cursor: pointer; border: none;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--navy); color: #fff; box-shadow: 0 4px 16px rgba(26,47,94,0.22); }
+.btn-primary:hover { box-shadow: 0 8px 24px rgba(26,47,94,0.32); }
+.btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.btn-ghost:hover { border-color: #b0b8cc; }
+
+.hero-stats {
+  display: flex; gap: 48px; margin-top: 72px;
+  padding-top: 40px; border-top: 1px solid var(--border);
+}
+.stat-num { font-size: 30px; font-weight: 700; color: var(--navy); letter-spacing: -0.03em; line-height: 1; }
+.stat-label { font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+/* hero visual */
+.hero-visual {
+  position: absolute; right: 64px; top: 50%; transform: translateY(-50%);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px; pointer-events: none;
+}
+.vis-card {
+  width: 152px; border-radius: 14px; background: var(--surface);
+  border: 1px solid var(--border); padding: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+.vis-card:nth-child(even) { margin-top: 28px; }
+.vis-icon { width: 36px; height: 36px; border-radius: 9px; margin-bottom: 14px; display: flex; align-items: center; justify-content: center; }
+.vi1{background:var(--navy-pale)} .vi2{background:#e8f5ee} .vi3{background:#fef3e2} .vi4{background:#f0e8f5}
+.vis-bar { height: 5px; border-radius: 4px; background: var(--border); margin-bottom: 6px; }
+.vis-bar-short { width: 55%; }
+.vis-label { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.04em; margin-top: 10px; }
+
+/* PROOF STRIP */
+.proof-strip {
+  background: var(--navy); padding: 18px 64px;
+  display: flex; align-items: center; gap: 40px; overflow: hidden;
+  flex-shrink: 0;
+}
+.proof-item { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.55); font-size: 13px; white-space: nowrap; }
+.proof-item strong { color: #fff; font-weight: 600; }
+.proof-sep { color: rgba(255,255,255,0.15); }
+
+/* SECTIONS */
+section { padding: 96px 64px; }
+.label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 14px; }
+.sec-title { font-size: clamp(26px, 3vw, 40px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; margin-bottom: 14px; }
+.sec-sub { font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 480px; margin-bottom: 56px; }
+
+/* SERVICES */
+#servicos { background: var(--surface); }
+.srv-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.srv-card {
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 36px 32px; background: var(--bg);
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.srv-card:hover { border-color: var(--navy); transform: translateY(-4px); box-shadow: 0 20px 48px rgba(26,47,94,0.07); }
+.srv-icon-wrap { width: 46px; height: 46px; border-radius: 11px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
+.si1{background:var(--navy-pale)} .si2{background:#e8f5ee} .si3{background:#fef3e2}
+.srv-name { font-size: 17px; font-weight: 600; margin-bottom: 12px; letter-spacing: -0.01em; }
+.srv-desc { font-size: 13px; line-height: 1.8; color: var(--muted); margin-bottom: 24px; }
+.srv-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.stag { font-size: 11px; font-weight: 500; color: var(--muted); border: 1px solid var(--border); padding: 3px 11px; border-radius: 100px; background: var(--surface); }
+
+/* HOW IT WORKS */
+#como { background: var(--bg); }
+.steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; position: relative; }
+.steps::before {
+  content: ''; position: absolute; top: 27px; left: 14%; right: 14%;
+  height: 1px; background: var(--border); z-index: 0;
+}
+.step { padding: 0 20px; position: relative; z-index: 1; }
+.step-num {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 24px;
+}
+.step-title { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+.step-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+/* PORTFOLIO — category cards */
+#projetos { background: var(--surface); }
+.cat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
+.cat-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.cat-card:hover { transform: translateY(-5px); box-shadow: 0 24px 56px rgba(0,0,0,0.08); border-color: var(--navy); }
+.cat-thumb { height: 160px; display: flex; align-items: center; justify-content: center; }
+.ct1{background:var(--navy-pale)} .ct2{background:#e8f5ee} .ct3{background:#fef3e2} .ct4{background:#f0e8f5}
+.cat-thumb-inner {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  display: flex; align-items: center; justify-content: center;
+}
+.cat-body { padding: 22px 22px 26px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.cat-top { display: flex; align-items: center; justify-content: space-between; }
+.cat-icon-wrap { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+.ci1{background:var(--navy-pale)} .ci2{background:#e8f5ee} .ci3{background:#fef3e2} .ci4{background:#f0e8f5}
+.cat-arr { color: var(--muted); transition: transform 0.2s, color 0.2s; }
+.cat-card:hover .cat-arr { transform: translate(3px,-3px); color: var(--navy); }
+.cat-name { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; }
+.cat-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+/* CONTACT */
+#contato { background: var(--navy); }
+#contato .label { color: rgba(255,255,255,0.3); }
+#contato .sec-title { color: #fff; }
+#contato .sec-sub { color: rgba(255,255,255,0.5); }
+.contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.contact-channels { display: flex; flex-direction: column; gap: 10px; }
+.ch {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 18px 22px;
+  text-decoration: none; color: #fff; transition: background 0.2s, border-color 0.2s;
+}
+.ch:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.16); }
+.ch-left { display: flex; align-items: center; gap: 14px; }
+.ch-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; }
+.ch-name { font-size: 14px; font-weight: 600; }
+.ch-val { font-size: 12px; color: rgba(255,255,255,0.38); margin-top: 2px; }
+.ch-arr { color: rgba(255,255,255,0.25); transition: transform 0.2s, color 0.2s; }
+.ch:hover .ch-arr { transform: translate(3px,-3px); color: rgba(255,255,255,0.8); }
+
+footer {
+  background: #0d1626; padding: 26px 64px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: rgba(255,255,255,0.22); flex-shrink: 0;
+}
+footer strong { color: rgba(255,255,255,0.45); font-weight: 500; }
+
+/* ANIMATIONS */
+.fu { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s cubic-bezier(.22,1,.36,1); }
+.fu.in { opacity: 1; transform: none; }
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .hero-visual { display: none; }
+  .srv-grid { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .steps::before { display: none; }
+  .cat-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media(max-width:768px){
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  section { padding: 72px 20px; }
+  .hero { padding: 20px; padding-top: 80px; }
+  .srv-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .cat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .cat-thumb { height: 120px; }
+  .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .hero-stats { gap: 28px; flex-wrap: wrap; }
+  footer { padding: 20px; flex-direction: column; gap: 8px; text-align: center; }
+  .proof-strip { padding: 16px 24px; gap: 16px; flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Lucas Queiroz <span>· One Percent</span></a>
+  <ul class="nav-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#como">Como funciona</a></li>
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#contato" class="nav-cta">Falar agora</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="hero-badge"><div class="hero-badge-dot"></div> Aceitando novos parceiros</div>
+
+    <h1 class="hero-title">
+      Execução que sua<br>
+      agência pode vender<br>
+      <span class="accent">como própria.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Trabalho direto com agências que precisam de alguém confiável para executar — sem precisar explicar tudo duas vezes, sem atraso, sem retrabalho. Landing pages, automações e agentes de IA.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#projetos" class="btn btn-primary">Ver portfólio</a>
+      <a href="#contato" class="btn btn-ghost">Quero ser parceiro</a>
+    </div>
+
+    <div class="hero-stats">
+      <div><div class="stat-num">+20</div><div class="stat-label">Projetos entregues</div></div>
+      <div><div class="stat-num">4</div><div class="stat-label">Serviços disponíveis</div></div>
+      <div><div class="stat-num">100%</div><div class="stat-label">White label</div></div>
+    </div>
+  </div>
+
+  <div class="hero-visual" aria-hidden="true">
+    <div class="vis-card">
+      <div class="vis-icon vi1">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2f5e" stroke-width="2" stroke-linecap="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div class="vis-bar"></div><div class="vis-bar vis-bar-short"></div>
+      <div class="vis-label">Landing Pages</div>
+    </div>
+    <div class="vis-card">
+      <div class="vis-icon vi2">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3"/></svg>
+      </div>
+      <div class="vis-bar"></div><div class="vis-bar vis-bar-short"></div>
+      <div class="vis-label">Agente de IA</div>
+    </div>
+    <div class="vis-card">
+      <div class="vis-icon vi3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="vis-bar"></div><div class="vis-bar vis-bar-short"></div>
+      <div class="vis-label">Automação</div>
+    </div>
+    <div class="vis-card">
+      <div class="vis-icon vi4">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><polyline points="7,10 10,7 13,10 17,6"/></svg>
+      </div>
+      <div class="vis-bar"></div><div class="vis-bar vis-bar-short"></div>
+      <div class="vis-label">Dashboard</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <div class="proof-item"><strong>White label</strong> — o crédito vai todo pra sua agência</div>
+  <div class="proof-sep">·</div>
+  <div class="proof-item"><strong>Sem enrolação</strong> — briefing, proposta, execução</div>
+  <div class="proof-sep">·</div>
+  <div class="proof-item"><strong>Prazo real</strong> — não some, não atrasa</div>
+  <div class="proof-sep">·</div>
+  <div class="proof-item"><strong>Stack atual</strong> — IA, automação, conversão</div>
+</div>
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <span class="label fu">O que executo para você</span>
+  <h2 class="sec-title fu">Sua agência vende.<br>Eu entrego.</h2>
+  <p class="sec-sub fu">Pego o briefing, executo do começo ao fim e devolvo pronto para apresentar. Sem microgerenciamento, sem idas e vindas desnecessárias.</p>
+
+  <div class="srv-grid">
+    <div class="srv-card fu">
+      <div class="srv-icon-wrap si1">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a2f5e" stroke-width="2" stroke-linecap="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <h3 class="srv-name">Landing Pages</h3>
+      <p class="srv-desc">Páginas que o cliente da sua agência vai mostrar pra todo mundo — e que realmente convertem. Copy, estrutura e design pensados no objetivo, não no template.</p>
+      <div class="srv-tags">
+        <span class="stag">Páginas de Vendas</span><span class="stag">Página de Captura</span>
+        <span class="stag">CRO</span><span class="stag">Alta Conversão</span>
+      </div>
+    </div>
+    <div class="srv-card fu">
+      <div class="srv-icon-wrap si2">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      </div>
+      <h3 class="srv-name">Agentes de IA</h3>
+      <p class="srv-desc">Atendimento automatizado, qualificação de lead e suporte interno. Lead que chegava fora do horário e ia embora — agora é captado, qualificado e jogado no CRM.</p>
+      <div class="srv-tags">
+        <span class="stag">Atendimento 24/7</span><span class="stag">Qualificação de Leads</span>
+        <span class="stag">WhatsApp</span><span class="stag">Integração com CRM</span>
+      </div>
+    </div>
+    <div class="srv-card fu">
+      <div class="srv-icon-wrap si3">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3 class="srv-name">Automação de Processos</h3>
+      <p class="srv-desc">Aquele processo que o time do seu cliente faz na mão toda semana. Automatizo, coloco um dashboard em cima e a equipe para de perder tempo com isso.</p>
+      <div class="srv-tags">
+        <span class="stag">Automação</span><span class="stag">Dashboards</span>
+        <span class="stag">Relatórios</span><span class="stag">Integrações</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como">
+  <span class="label fu">Processo</span>
+  <h2 class="sec-title fu">Direto ao ponto,<br>sem enrolação.</h2>
+  <p class="sec-sub fu">Você me passa o briefing. Eu tiro as dúvidas que preciso, alinho escopo e já começo.</p>
+
+  <div class="steps">
+    <div class="step fu">
+      <div class="step-num">01</div>
+      <div class="step-title">Briefing</div>
+      <p class="step-desc">Me manda o contexto do projeto — objetivo, cliente e prazo. Não precisa ser um documento formal, uma mensagem já resolve.</p>
+    </div>
+    <div class="step fu">
+      <div class="step-num">02</div>
+      <div class="step-title">Alinhamento rápido</div>
+      <p class="step-desc">Respondo com a proposta em até 24h. Se tiver dúvida no escopo, resolvo na mesma conversa. Sem reuniões longas.</p>
+    </div>
+    <div class="step fu">
+      <div class="step-num">03</div>
+      <div class="step-title">Execução autônoma</div>
+      <p class="step-desc">Trabalho sem precisar de acompanhamento constante. Te chamo só quando tem uma decisão que depende de você. Sem babysit.</p>
+    </div>
+    <div class="step fu">
+      <div class="step-num">04</div>
+      <div class="step-title">Entrega final</div>
+      <p class="step-desc">Entrego com revisão incluída, pronto para apresentar. O crédito vai todo pra sua agência — sem menção ao meu nome.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFÓLIO -->
+<section id="projetos">
+  <div class="fu" style="margin-bottom:48px">
+    <span class="label">Portfólio</span>
+    <h2 class="sec-title">O que já saiu daqui</h2>
+    <p class="sec-sub">Escolha uma categoria e veja os projetos entregues — com contexto e resultado real.</p>
+  </div>
+
+  <div class="cat-grid">
+
+    <a href="pages/landing-pages.html" class="cat-card fu">
+      <div class="cat-thumb ct1" style="padding:0;">
+        <img src="./assets/capa-landing-page.webp" alt="Capa Landing Page" style="width:100%; object-fit:cover;">
+      </div>
+      <div class="cat-body">
+        <div class="cat-top">
+          <div class="cat-icon-wrap ci1">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2f5e" stroke-width="2" stroke-linecap="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div class="cat-arr">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+          </div>
+        </div>
+        <h3 class="cat-name">Landing Pages</h3>
+        <p class="cat-desc">Páginas de vendas e captura pensadas para converter.</p>
+      </div>
+    </a>
+
+    <a href="pages/agentes-ia.html" class="cat-card fu">
+      <div class="cat-thumb ct2">
+        <div class="cat-thumb ct1" style="padding:0;">
+          <img src="./assets/agentes-ia.webp" alt="Capa Agentes IA" style="width:100%;">
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-top">
+          <div class="cat-icon-wrap ci2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+          </div>
+          <div class="cat-arr">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+          </div>
+        </div>
+        <h3 class="cat-name">Agentes de IA</h3>
+        <p class="cat-desc">Atendimento automatizado, qualificação de leads e suporte interno com IA.</p>
+      </div>
+    </a>
+
+    <a href="pages/automacao-processos.html" class="cat-card fu">
+      <div class="cat-thumb ct3">
+        <div class="cat-thumb ct1" style="padding:0;">
+          <img src="./assets/automacao-processos.webp" alt="Capa Automação Processos" style="width:100%;">
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-top">
+          <div class="cat-icon-wrap ci3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="cat-arr">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+          </div>
+        </div>
+        <h3 class="cat-name">Automação de Processos</h3>
+        <p class="cat-desc">Processos manuais eliminados, integrações e fluxos que rodam sozinhos.</p>
+      </div>
+    </a>
+
+    <a href="pages/dashboards.html" class="cat-card fu">
+      <div class="cat-thumb ct4">
+        <div class="cat-thumb ct1" style="padding:0;">
+          <img src="./assets/dashboards.webp" alt="Capa Dashboards" style="width:100%;">
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-top">
+          <div class="cat-icon-wrap ci4">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><polyline points="7,10 10,7 13,10 17,6"/></svg>
+          </div>
+          <div class="cat-arr">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+          </div>
+        </div>
+        <h3 class="cat-name">Dashboards</h3>
+        <p class="cat-desc">Métricas centralizadas, relatórios automatizados e visibilidade para gestores.</p>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="contact-wrap">
+    <div>
+      <span class="label fu">Parceria</span>
+      <h2 class="sec-title fu">Tem demanda<br>sobrando na<br>sua agência?</h2>
+      <p class="sec-sub fu">Me manda uma mensagem. Conto o que faz sentido pra mim trabalhar, a gente alinha e, se der match, já pego o próximo projeto.</p>
+    </div>
+    <div class="contact-channels fu">
+      <a href="https://wa.me/5534991179685" class="ch">
+        <div class="ch-left">
+          <div class="ch-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div><div class="ch-name">WhatsApp</div><div class="ch-val">(34) 99117-9685</div></div>
+        </div>
+        <div class="ch-arr">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </div>
+      </a>
+      <a href="mailto:lucasq.dev@gmail.com" class="ch">
+        <div class="ch-left">
+          <div class="ch-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div><div class="ch-name">E-mail</div><div class="ch-val">lucasq.dev@gmail.com</div></div>
+        </div>
+        <div class="ch-arr">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </div>
+      </a>
+      
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 <strong>Lucas Queiroz</strong> · One Percent</span>
+  <span>Uberlândia, MG · Brasil</span>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('in'), (i % 4) * 90);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
