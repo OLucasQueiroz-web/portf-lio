@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="ORBITA | Copiloto de Crescimento com IA">
+  <meta property="og:description" content="O ORBITA combina dados das suas redes sociais com IA conversacional para responder perguntas estratégicas sobre crescimento, audiência e monetização.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/opengraph.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ORBITA | Copiloto de Crescimento com IA">
+  <meta name="twitter:description" content="O ORBITA combina dados das suas redes sociais com IA conversacional para responder perguntas estratégicas sobre crescimento, audiência e monetização.">
+  <meta name="twitter:image" content="/opengraph.jpg">
+
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* =============================================
+       DESIGN TOKENS
+    ============================================= */
+    :root {
+      /* Colors */
+      --color-bg:            #050A0F;
+      --color-bg-mid:        #0A1628;
+      --color-bg-overlay:    rgba(5, 10, 15, 0.70);
+      --color-forest:        #050A0F;
+      --color-forest-dark:   #0D2B26;
+      --color-beige:         #050A0F;
+      --color-beige-dark:    #050A0F;
+      --color-blue:          #3B82F6;
+      --color-blue-glow:     #60A5FA;
+      --color-teal:          #14B8A6;
+      --color-white:         #FFFFFF;
+      --color-text-dark:     #fff;
+      --color-text-muted:    #fff;
+
+      /* Typography */
+      --font-display: 'Inter', 'Sora', system-ui, sans-serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+      /* Radii */
+      --radius-sm:   0.25rem;
+      --radius-md:   0.375rem;
+      --radius-lg:   0.5rem;
+      --radius-xl:   0.75rem;
+      --radius-2xl:  1rem;
+      --radius-pill: 9999px;
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      font-family: var(--font-body);
+      color: var(--color-white);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    img, svg, video {
+      display: block;
+      max-width: 100%;
+    }
+
+    button {
+      cursor: pointer;
+      font: inherit;
+      background: transparent;
+      border: none;
+    }
+
+    ol, ul {
+      list-style: none;
+    }
+
+    /* =============================================
+       UTILITIES
+    ============================================= */
+    .container {
+      max-width: 1280px;
+      margin-inline: auto;
+      padding-inline: 1.5rem;
+    }
+
+    .container--narrow {
+      max-width: 720px;
+      margin-inline: auto;
+      padding-inline: 1.5rem;
+    }
+
+    /* Noise texture overlay */
+    .noise-bg {
+      position: relative;
+    }
+    .noise-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* Section label */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-blue-glow);
+      margin-bottom: 1rem;
+    }
+    .section-label__dot {
+      width: 0.375rem;
+      height: 0.375rem;
+      border-radius: 50%;
+      background-color: var(--color-blue-glow);
+    }
+    .section-label--dark {
+      color: var(--color-forest);
+    }
+    .section-label--dark .section-label__dot {
+      background-color: var(--color-forest);
+    }
+
+    /* Glass card */
+    .glass-card {
+      background-color: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+    }
+    .glass-card:hover {
+      border-color: rgba(96,165,250,0.30);
+      box-shadow: 0 0 60px rgba(59,130,246,0.15), 0 16px 48px rgba(0,0,0,0.5);
+      transform: translateY(-4px);
+      transition: all 300ms cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* Gradient text */
+    .text-gradient {
+      background: linear-gradient(to bottom right, var(--color-blue), var(--color-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* =============================================
+       ANIMATIONS
+    ============================================= */
+    @keyframes glowPulse {
+      0%   { opacity: 0.6; }
+      50%  { opacity: 1;   }
+      100% { opacity: 0.6; }
+    }
+
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0px);   }
+      50%       { transform: translateY(-8px); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    .animate-glow-pulse { animation: glowPulse 3s ease-in-out infinite; }
+    .animate-float      { animation: floatY  4s ease-in-out infinite;   }
+    .animate-blink      { animation: blink   1s step-end infinite;       }
+
+    /* =============================================
+       NAVBAR
+    ============================================= */
+    .navbar {
+      position: fixed;
+      top: 0;
+      inset-inline: 0;
+      z-index: 50;
+      background-color: transparent;
+      border-bottom: 1px solid transparent;
+      transition: all 300ms;
+    }
+
+    .navbar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 4rem;
+    }
+
+    .navbar__logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.025em;
+    }
+
+    .navbar__logo-icon {
+      position: relative;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      border: 2px solid var(--color-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navbar__logo-dot {
+      width: 0.375rem;
+      height: 0.375rem;
+      border-radius: 50%;
+      background-color: var(--color-blue);
+    }
+
+    .navbar__logo-ring {
+      position: absolute;
+      inset: -4px;
+      border: 1px solid rgba(255,255,255,0.30);
+      border-radius: 50%;
+      transform: rotate(45deg);
+    }
+
+    .navbar__links {
+      display: none;
+      align-items: center;
+      gap: 2rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+    }
+
+    @media (min-width: 768px) {
+      .navbar__links { display: flex; }
+    }
+
+    .navbar__links a:hover {
+      color: var(--color-white);
+      transition: color 150ms;
+    }
+
+    .navbar__cta {
+      padding: 0.625rem 1.5rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255,255,255,0.30);
+      color: var(--color-white);
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: all 200ms;
+    }
+
+    .navbar__cta:hover {
+      background-color: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.80);
+    }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      padding-top: 8rem;
+      padding-bottom: 5rem;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero__glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background-color: rgba(59,130,246,0.10);
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .hero__grid {
+      display: grid;
+      gap: 3rem;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .hero__grid { grid-template-columns: 55% 45%; }
+    }
+
+    /* Hero – left column */
+    .hero__eyebrow {
+      margin-bottom: 1.5rem;
+    }
+
+    .hero__headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 50px;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
+    }
+
+    .hero__headline span {
+      color: var(--color-blue-glow);
+    }
+
+    .hero__body {
+      color: rgba(255,255,255,0.65);
+      font-size: 1.125rem;
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero__ctas {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    @media (min-width: 640px) {
+      .hero__ctas {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .btn-primary {
+      padding: 1rem 2.5rem;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(to bottom right, var(--color-blue), var(--color-teal));
+      color: var(--color-white);
+      font-weight: 600;
+      box-shadow: 0 0 20px rgba(96,165,250,0.4), 0 4px 16px rgba(0,0,0,0.3);
+      transition: all 300ms;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 30px rgba(59,130,246,0.5);
+      transform: translateY(-2px);
+    }
+
+    .hero__disclaimer {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.6;
+    }
+
+    /* Hero – right column (visual) */
+    .hero__visual {
+      position: relative;
+    }
+
+    .hero__image-wrap {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+      aspect-ratio: 3/4;
+      background-color: var(--color-forest-dark);
+    }
+
+    @media (min-width: 768px) {
+      .hero__image-wrap { aspect-ratio: 4/5; }
+    }
+
+    .hero__image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.90;
+    }
+
+    .hero__image-fade-left {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(5,10,15,0.90), transparent);
+      width: 40%;
+    }
+
+    .hero__image-fade-bottom {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--color-bg), transparent);
+    }
+
+    /* Floating stat chips */
+    .hero__chip {
+      position: absolute;
+      background-color: rgba(5,10,15,0.70);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius-xl);
+      padding: 0.625rem 0.875rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.80);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    .hero__chip--top-left {
+      top: 25%;
+      left: -1.5rem;
+      animation: floatY 4s ease-in-out infinite;
+    }
+
+    .hero__chip--mid-right {
+      bottom: 33%;
+      right: -2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: floatY 4s ease-in-out 1s infinite;
+    }
+
+    .hero__chip--bot-left {
+      top: 60%;
+      left: -1rem;
+      border-color: rgba(59,130,246,0.20);
+      color: rgba(255,255,255,0.90);
+      animation: floatY 4s ease-in-out 2s infinite;
+    }
+
+    .hero__chip-up {
+      color: var(--color-teal);
+    }
+
+    /* =============================================
+       FEATURES SECTION
+    ============================================= */
+    .features {
+      padding-block: clamp(80px, 12vw, 140px);
+      background: linear-gradient(to bottom, var(--color-bg), var(--color-bg-mid));
+      border-top: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+    }
+
+    .features__header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .features__title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .features__grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .features__grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .feature-card {
+      padding: 2rem;
+      transition: all 300ms cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .feature-card__icon-wrap {
+      width: 3rem;
+      height: 3rem;
+      border-radius: var(--radius-xl);
+      background-color: rgba(59,130,246,0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      transition: transform 300ms;
+    }
+
+    .feature-card:hover .feature-card__icon-wrap {
+      transform: scale(1.1);
+    }
+
+    .feature-card__icon {
+      color: var(--color-blue-glow);
+    }
+
+    .feature-card__title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card__body {
+      color: rgba(255,255,255,0.65);
+      line-height: 1.625;
+      font-size: 0.9375rem;
+    }
+
+    /* =============================================
+       AI PROMPT SECTION
+    ============================================= */
+    .ai-section {
+      padding-block: clamp(80px, 12vw, 140px);
+      background-color: var(--color-forest);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ai-section__radial {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .ai-section__header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .ai-section__title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(32px, 4vw, 56px);
+      color: var(--color-white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .ai-section__card {
+      background-color: rgba(255,255,255,0.03);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(59,130,246,0.08);
+      padding: 2rem;
+    }
+
+    .ai-section__suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .suggestion-chip {
+      background-color: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-pill);
+      padding: 0.5rem 1rem;
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.65);
+      transition: all 200ms;
+      text-align: left;
+    }
+
+    .suggestion-chip:hover {
+      background-color: rgba(59,130,246,0.10);
+      border-color: rgba(59,130,246,0.30);
+      color: var(--color-white);
+      transform: translateY(-2px);
+    }
+
+    .ai-section__form {
+      position: relative;
+    }
+
+    .ai-section__form-glow {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(59,130,246,0.20);
+      filter: blur(24px);
+      border-radius: var(--radius-pill);
+      opacity: 0;
+      transition: opacity 500ms;
+      pointer-events: none;
+    }
+
+    .ai-section__input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius-2xl);
+      padding: 0.5rem;
+      transition: all 300ms;
+    }
+
+    .ai-section__input-wrap:focus-within {
+      border-color: rgba(59,130,246,0.50);
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.15);
+    }
+
+    .ai-section__input-wrap:focus-within + .ai-section__form-glow {
+      opacity: 1;
+    }
+
+    .ai-section__input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--color-white);
+      padding: 0.5rem 1rem;
+      font-size: 0.9375rem;
+    }
+
+    .ai-section__input::placeholder {
+      color: rgba(255,255,255,0.30);
+    }
+
+    .ai-section__submit {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-color: var(--color-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-white);
+      transition: opacity 200ms;
+      flex-shrink: 0;
+    }
+
+    .ai-section__submit:disabled {
+      opacity: 0.5;
+    }
+
+    .ai-section__response {
+      margin-top: 1.5rem;
+      min-height: 120px;
+    }
+
+    /* =============================================
+       PRIVACY / TRUST SECTION
+    ============================================= */
+    .privacy {
+      padding-block: clamp(80px, 12vw, 140px);
+      background: linear-gradient(to bottom right, var(--color-beige), var(--color-beige-dark));
+      color: var(--color-text-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .privacy__noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .privacy__grid {
+      display: grid;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    @media (min-width: 768px) {
+      .privacy__grid { grid-template-columns: 40% 60%; }
+    }
+
+    .privacy__headline {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(32px, 4vw, 48px);
+      color: var(--color-text-dark);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .privacy__body {
+      color: var(--color-text-muted);
+      font-size: 1.125rem;
+      line-height: 1.6;
+    }
+
+    .privacy__cards {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .privacy__cards { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .privacy-card {
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: var(--radius-2xl);
+      padding: 1.5rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .privacy-card__icon {
+      margin-top: 0.125rem;
+      color: #FFFFFF;
+      flex-shrink: 0;
+    }
+
+    .privacy-card__text {
+      font-weight: 500;
+      color: var(--color-text-dark);
+      font-size: 0.9375rem;
+      line-height: 1.375;
+    }
+
+    /* =============================================
+       CTA FINAL SECTION
+    ============================================= */
+    .cta-final {
+      padding-block: clamp(80px, 12vw, 140px);
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-final__radial {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-final__inner {
+      position: relative;
+      z-index: 10;
+    }
+
+    .cta-final__headline {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(32px, 4vw, 56px);
+      color: var(--color-white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-final__list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .cta-final__list-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: rgba(255,255,255,0.85);
+      font-size: 1.0625rem;
+    }
+
+    .cta-final__list-item svg {
+      color: var(--color-blue-glow);
+      flex-shrink: 0;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1.25rem 3rem;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(to bottom right, var(--color-blue), var(--color-teal));
+      color: var(--color-white);
+      font-weight: 600;
+      font-size: 1.125rem;
+      box-shadow: 0 0 20px rgba(96,165,250,0.4);
+      transition: all 300ms;
+    }
+
+    .btn-cta:hover {
+      box-shadow: 0 0 40px rgba(59,130,246,0.6);
+      transform: translateY(-4px);
+    }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    .footer {
+      background-color: var(--color-bg);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 4rem;
+      padding-bottom: 2rem;
+    }
+
+    .footer__grid {
+      display: grid;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer__grid { grid-template-columns: 1fr 2fr 1fr; }
+    }
+
+    .footer__brand-name {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.025em;
+      color: var(--color-white);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer__tagline {
+      color: rgba(255,255,255,0.40);
+      font-size: 0.875rem;
+      max-width: 250px;
+    }
+
+    .footer__links-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer__links-grid { justify-items: center; }
+    }
+
+    .footer__links-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer__links-col h4 {
+      color: var(--color-white);
+      font-weight: 500;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer__links-col a {
+      color: rgba(255,255,255,0.40);
+      font-size: 0.875rem;
+      transition: color 150ms;
+    }
+
+    .footer__links-col a:hover {
+      color: var(--color-white);
+    }
+
+    .footer__legal {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer__legal { align-items: flex-end; }
+    }
+
+    .footer__legal h4 {
+      color: var(--color-white);
+      font-weight: 500;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer__legal a {
+      color: rgba(255,255,255,0.40);
+      font-size: 0.875rem;
+      transition: color 150ms;
+    }
+
+    .footer__legal a:hover { color: var(--color-white); }
+
+    .footer__bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 2rem;
+      text-align: center;
+      color: rgba(255,255,255,0.25);
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================
+       WRAPPER
+  ============================================= -->
+  <div class="min-h-screen">
+
+    <!-- ==========================================
+         NAVBAR
+    =========================================== -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar__inner">
+
+          <!-- Logo -->
+          <div class="navbar__logo">
+            <div class="navbar__logo-icon">
+              <div class="navbar__logo-dot"></div>
+              <div class="navbar__logo-ring"></div>
+            </div>
+            ORBITA
+          </div>
+
+          <!-- Nav links -->
+          <div class="navbar__links">
+            <a href="#">Funcionalidades</a>
+            <a href="#">Como funciona</a>
+            <a href="#">Preços</a>
+          </div>
+
+          <!-- CTA -->
+          <div>
+            <button class="navbar__cta">Começar grátis</button>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <!-- ==========================================
+         HERO
+    =========================================== -->
+    <section class="hero noise-bg">
+      <div class="hero__glow"></div>
+
+      <div class="container">
+        <div class="hero__grid">
+
+          <!-- Left: Copy -->
+          <div>
+            <div class="section-label hero__eyebrow">
+              <span class="section-label__dot"></span>
+              COPILOTO DE CRESCIMENTO COM IA
+            </div>
+
+            <h1 class="hero__headline">
+              O primeiro copiloto de crescimento com IA que
+              <span>realmente entende</span> seu conteúdo
+            </h1>
+
+            <p class="hero__body">
+              O ORBITA combina dados das suas redes sociais com IA conversacional para responder
+              perguntas estratégicas sobre crescimento, audiência e monetização — sem você precisar
+              analisar planilhas ou métricas confusas.
+            </p>
+
+            <div class="hero__ctas">
+              <button class="btn-primary">Teste grátis por 14 dias</button>
+              <div class="hero__disclaimer">
+                Sem cartão de crédito<br>
+                Cancele quando quiser
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Visual -->
+          <div class="hero__visual">
+            <div class="hero__image-wrap">
+              <img
+                src="../../assets/landing-pages/Orbita/view-orbita.png"
+                alt="View Dashboard"
+              >
+              <div class="hero__image-fade-left"></div>
+              <div class="hero__image-fade-bottom"></div>
+            </div>
+
+            <!-- Floating chips -->
+            <div class="hero__chip hero__chip--top-left" aria-hidden="true">
+              +24% engajamento
+            </div>
+
+            <div class="hero__chip hero__chip--mid-right" aria-hidden="true">
+              <span class="hero__chip-up">↑</span>
+              98k views
+            </div>
+
+            <div class="hero__chip hero__chip--bot-left" aria-hidden="true">
+              Retenção: 67%
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURES
+    =========================================== -->
+    <section class="features">
+      <div class="container">
+
+        <div class="features__header">
+          <div class="section-label">
+            <span class="section-label__dot"></span>
+            POR QUE ORBITA
+          </div>
+          <h2 class="features__title">Por que ORBITA?</h2>
+        </div>
+
+        <div class="features__grid">
+
+          <!-- Card 1 -->
+          <div class="feature-card glass-card">
+            <div class="feature-card__icon-wrap">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feature-card__icon"
+                aria-hidden="true"
+              >
+                <path d="M16 7h6v6"></path>
+                <path d="m22 7-8.5 8.5-5-5L2 17"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card__title">Conecta automaticamente</h3>
+            <p class="feature-card__body">
+              Integra Instagram, YouTube, TikTok e outras plataformas para centralizar todas as
+              suas métricas em um só lugar.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="feature-card glass-card">
+            <div class="feature-card__icon-wrap">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feature-card__icon"
+                aria-hidden="true"
+              >
+                <path d="M12 18V5"></path>
+                <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"></path>
+                <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"></path>
+                <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"></path>
+                <path d="M18 18a4 4 0 0 0 2-7.464"></path>
+                <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"></path>
+                <path d="M6 18a4 4 0 0 1-2-7.464"></path>
+                <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card__title">Insights acionáveis</h3>
+            <p class="feature-card__body">
+              Não mostra só números — explica o que está acontecendo e sugere ações práticas para
+              crescer mais rápido.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="feature-card glass-card">
+            <div class="feature-card__icon-wrap">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feature-card__icon"
+                aria-hidden="true"
+              >
+                <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card__title">Você pergunta, ela responde</h3>
+            <p class="feature-card__body">
+              Pergunte qualquer coisa sobre seu conteúdo, audiência ou monetização e receba
+              respostas claras e estratégicas.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         AI PROMPT SECTION
+    =========================================== -->
+    <section class="ai-section noise-bg">
+      <div class="ai-section__radial"></div>
+
+      <div class="container">
+        <div class="ai-section__header">
+          <div class="section-label">
+            <span class="section-label__dot"></span>
+            EXPERIMENTE AGORA
+          </div>
+          <h2 class="ai-section__title">Você tem perguntas, a ORBITA tem respostas</h2>
+        </div>
+
+        <div class="ai-section__card container--narrow">
+
+          <!-- Suggestion chips -->
+          <div class="ai-section__suggestions">
+            <button class="suggestion-chip">Por que meu alcance caiu esta semana?</button>
+            <button class="suggestion-chip">Qual tipo de vídeo gera mais retenção?</button>
+            <button class="suggestion-chip">Estou pronto para lançar um produto?</button>
+            <button class="suggestion-chip">Qual é o melhor dia para postar?</button>
+            <button class="suggestion-chip">Como dobrar minha receita?</button>
+          </div>
+
+          <!-- Input form -->
+          <form class="ai-section__form">
+            <div class="ai-section__form-glow"></div>
+            <div class="ai-section__input-wrap">
+              <input
+                class="ai-section__input"
+                type="text"
+                placeholder="Pergunte-me qualquer coisa sobre seu crescimento..."
+              >
+              <button class="ai-section__submit" type="submit" disabled>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18" height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path>
+                  <path d="m21.854 2.147-10.94 10.939"></path>
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          <!-- Response area -->
+          <div class="ai-section__response"></div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         PRIVACY / TRUST
+    =========================================== -->
+    <section class="privacy">
+      <div class="privacy__noise"></div>
+
+      <div class="container">
+        <div class="privacy__grid">
+
+          <!-- Left: Copy -->
+          <div style="padding-right: 1rem;">
+            <div class="section-label section-label--dark">
+              <span class="section-label__dot"></span>
+              PRIVACIDADE
+            </div>
+            <h2 class="privacy__headline">Seus dados estão protegidos</h2>
+            <p class="privacy__body">
+              Acreditamos que o seu crescimento não deve custar a sua privacidade. Seus dados nunca
+              saem dos nossos servidores com certificação empresarial e a IA é treinada apenas no
+              seu contexto isolado.
+            </p>
+          </div>
+
+          <!-- Right: Trust cards -->
+          <div class="privacy__cards">
+
+            <div class="privacy-card">
+              <div class="privacy-card__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+              </div>
+              <span class="privacy-card__text">Open APIs oficiais das plataformas</span>
+            </div>
+
+            <div class="privacy-card">
+              <div class="privacy-card__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+              </div>
+              <span class="privacy-card__text">Criptografia nível empresarial</span>
+            </div>
+
+            <div class="privacy-card">
+              <div class="privacy-card__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+              </div>
+              <span class="privacy-card__text">Seus dados nunca são vendidos</span>
+            </div>
+
+            <div class="privacy-card">
+              <div class="privacy-card__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+              </div>
+              <span class="privacy-card__text">Controle total sobre integrações</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         CTA FINAL
+    =========================================== -->
+    <section class="cta-final noise-bg">
+      <div class="cta-final__radial"></div>
+
+      <div class="container--narrow cta-final__inner">
+        <h2 class="cta-final__headline">
+          Pare de adivinhar.<br>
+          Comece a crescer com estratégia.
+        </h2>
+
+        <ul class="cta-final__list">
+          <li class="cta-final__list-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+            14 dias grátis — cancele quando quiser
+          </li>
+          <li class="cta-final__list-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+            Conecte suas contas em menos de 2 minutos
+          </li>
+          <li class="cta-final__list-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+            Sem contratos longos — preço fixo após o trial
+          </li>
+        </ul>
+
+        <button class="btn-cta animate-glow-pulse">
+          Teste grátis agora
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTER
+    =========================================== -->
+    <footer class="footer">
+      <div class="container">
+
+        <div class="footer__grid">
+
+          <!-- Brand -->
+          <div>
+            <div class="footer__brand-name">
+              <div class="navbar__logo-icon">
+                <div class="navbar__logo-dot"></div>
+                <div class="navbar__logo-ring"></div>
+              </div>
+              ORBITA
+            </div>
+            <p class="footer__tagline">
+              O primeiro copiloto de crescimento alimentado por IA para criadores de conteúdo.
+            </p>
+          </div>
+
+          <!-- Links -->
+          <div class="footer__links-grid">
+            <div class="footer__links-col">
+              <h4>Produto</h4>
+              <a href="#">Funcionalidades</a>
+              <a href="#">Como funciona</a>
+              <a href="#">Preços</a>
+            </div>
+            <div class="footer__links-col">
+              <h4>Recursos</h4>
+              <a href="#">Blog</a>
+              <a href="#">Guias de Crescimento</a>
+              <a href="#">Central de Ajuda</a>
+            </div>
+          </div>
+
+          <!-- Legal -->
+          <div class="footer__legal">
+            <h4>Legal</h4>
+            <a href="#">Política de Privacidade</a>
+            <a href="#">Termos de Uso</a>
+          </div>
+
+        </div>
+
+        <div class="footer__bottom">
+          © 2025 ORBITA. Todos os direitos reservados.
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>
