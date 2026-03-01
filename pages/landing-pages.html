@@ -329,175 +329,6 @@
         margin: 0 auto;
       }
 
-      /* =====================
-   LIGHTBOX
-   ===================== */
-      .lightbox {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.25s ease;
-      }
-      .lightbox.open {
-        opacity: 1;
-        pointer-events: all;
-      }
-
-      .lb-backdrop {
-        position: absolute;
-        inset: 0;
-        background: rgba(10, 14, 26, 0.85);
-        backdrop-filter: blur(10px);
-        cursor: zoom-out;
-      }
-
-      .lb-panel {
-        position: relative;
-        z-index: 1;
-        background: var(--surface);
-        border-radius: 20px;
-        overflow: hidden;
-        max-width: 900px;
-        width: 100%;
-        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45);
-        transform: translateY(20px) scale(0.97);
-        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-        display: flex;
-        flex-direction: column;
-        max-height: 90vh;
-      }
-      .lightbox.open .lb-panel {
-        transform: none;
-      }
-
-      .lb-image-wrap {
-        flex: 1;
-        overflow: hidden;
-        background: var(--bg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 300px;
-      }
-      .lb-image-wrap img {
-        max-width: 100%;
-        max-height: 60vh;
-        object-fit: contain;
-        display: block;
-      }
-      .lb-image-wrap img:active {
-        cursor: grabbing;
-      }
-      /* placeholder inside lightbox when no image */
-      .lb-placeholder {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        background: var(--accent-pale);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .lb-footer {
-        padding: 20px 28px;
-        border-top: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        flex-shrink: 0;
-      }
-      .lb-info {
-        flex: 1;
-        min-width: 0;
-      }
-      .lb-name {
-        font-size: 16px;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-        margin-bottom: 3px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .lb-meta {
-        font-size: 12px;
-        color: var(--muted);
-      }
-
-      .lb-actions {
-        display: flex;
-        gap: 10px;
-        flex-shrink: 0;
-      }
-
-      .lb-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        font-family: var(--font);
-        font-size: 13px;
-        font-weight: 600;
-        padding: 10px 18px;
-        border-radius: 9px;
-        border: none;
-        cursor: pointer;
-        text-decoration: none;
-        transition:
-          transform 0.15s,
-          box-shadow 0.15s,
-          background 0.15s;
-      }
-      .lb-btn:hover {
-        transform: translateY(-2px);
-      }
-      .lb-btn-download {
-        background: var(--accent);
-        color: #fff;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-      }
-      .lb-btn-download:hover {
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
-      }
-      .lb-btn-close {
-        background: var(--bg);
-        color: var(--text);
-        border: 1px solid var(--border);
-      }
-      .lb-btn-close:hover {
-        border-color: #b0b8cc;
-      }
-
-      /* close X top-right */
-      .lb-x {
-        position: absolute;
-        top: 14px;
-        right: 14px;
-        z-index: 2;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: rgba(0, 0, 0, 0.25);
-        backdrop-filter: blur(4px);
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        transition: background 0.2s;
-      }
-      .lb-x:hover {
-        background: rgba(0, 0, 0, 0.5);
-      }
-
       footer {
         background: #0d1626;
         padding: 24px 64px;
@@ -548,21 +379,6 @@
           flex-direction: column;
           gap: 6px;
           text-align: center;
-        }
-        .lb-panel {
-          border-radius: 14px;
-        }
-        .lb-footer {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 14px;
-        }
-        .lb-actions {
-          width: 100%;
-        }
-        .lb-btn {
-          flex: 1;
-          justify-content: center;
         }
       }
     </style>
@@ -650,7 +466,7 @@
           data-year="2025"
           data-cat="Landing Pages"
           data-img="../assets/landing-pages/orbita-page.png"
-          data-download="../assets/landing-pages/orbita-page.png"
+          data-link="landing-pages/orbita.html"
         >
           <div class="prj-thumb">
             <img
@@ -687,12 +503,11 @@
                   stroke-width="2.5"
                   stroke-linecap="round"
                 >
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.35-4.35" />
-                  <line x1="11" y1="8" x2="11" y2="14" />
-                  <line x1="8" y1="11" x2="14" y2="11" />
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
                 </svg>
-                Ver imagem
+                Ver projeto
               </div>
             </div>
           </div>
@@ -710,7 +525,7 @@
               primeiro scroll.
             </p>
             <div class="prj-cta">
-              Ver imagem
+              Ver projeto
               <svg
                 width="14"
                 height="14"
@@ -733,7 +548,7 @@
           data-year="2025"
           data-cat="Landing Pages"
           data-img="../assets/landing-pages/ecommerce.png"
-          data-download="../assets/landing-pages/ecommerce.png"
+          data-link="landing-pages/ecommerce.html"
         >
           <div class="prj-thumb">
             <img
@@ -770,12 +585,11 @@
                   stroke-width="2.5"
                   stroke-linecap="round"
                 >
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.35-4.35" />
-                  <line x1="11" y1="8" x2="11" y2="14" />
-                  <line x1="8" y1="11" x2="14" y2="11" />
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
                 </svg>
-                Ver imagem
+                Ver projeto
               </div>
             </div>
           </div>
@@ -792,7 +606,7 @@
               primeiro scroll.
             </p>
             <div class="prj-cta">
-              Ver imagem
+              Ver projeto
               <svg
                 width="14"
                 height="14"
@@ -811,11 +625,11 @@
         <!-- PROJETO IA -->
         <div
           class="prj-card fu"
-          data-name="IA"
+          data-name="NEURIX"
           data-year="2025"
           data-cat="Landing Pages"
           data-img="../assets/landing-pages/ia-page.png"
-          data-download="../assets/landing-pages/ia-page.png"
+          data-link="landing-pages/ia.html"
         >
           <div class="prj-thumb">
             <img
@@ -852,12 +666,11 @@
                   stroke-width="2.5"
                   stroke-linecap="round"
                 >
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.35-4.35" />
-                  <line x1="11" y1="8" x2="11" y2="14" />
-                  <line x1="8" y1="11" x2="14" y2="11" />
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
                 </svg>
-                Ver imagem
+                Ver projeto
               </div>
             </div>
           </div>
@@ -874,7 +687,7 @@ O projeto foi estruturado para comunicar três pilares fundamentais:
 tecnologia avançada, escalabilidade e segurança corporativa.
             </p>
             <div class="prj-cta">
-              Ver imagem
+              Ver projeto
               <svg
                 width="14"
                 height="14"
@@ -915,54 +728,6 @@ tecnologia avançada, escalabilidade e segurança corporativa.
       </div>
     </section>
 
-    <!-- LIGHTBOX -->
-    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
-      <div class="lb-backdrop" id="lbBackdrop"></div>
-      <div class="lb-panel">
-        <button class="lb-x" id="lbClose" aria-label="Fechar">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-          >
-            <path d="M18 6 6 18M6 6l12 12" />
-          </svg>
-        </button>
-        <div class="lb-image-wrap" id="lbImageWrap">
-          <!-- imagem injetada via JS -->
-        </div>
-        <div class="lb-footer">
-          <div class="lb-info">
-            <div class="lb-name" id="lbName"></div>
-            <div class="lb-meta" id="lbMeta"></div>
-          </div>
-          <div class="lb-actions">
-            <a class="lb-btn lb-btn-download" id="lbDownload" download>
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              Baixar imagem
-            </a>
-            <button class="lb-btn lb-btn-close" id="lbCloseBtn">Fechar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <footer>
       <span>© 2025 <strong>Lucas Queiroz</strong> · One Percent</span>
       <span>Uberlândia, MG · Brasil</span>
@@ -981,151 +746,15 @@ tecnologia avançada, escalabilidade e segurança corporativa.
       );
       document.querySelectorAll(".fu").forEach((el) => obs.observe(el));
 
-      // Lightbox
-      const lb = document.getElementById("lightbox");
-      const lbWrap = document.getElementById("lbImageWrap");
-      const lbName = document.getElementById("lbName");
-      const lbMeta = document.getElementById("lbMeta");
-      const lbDl = document.getElementById("lbDownload");
-      const lbClose = document.getElementById("lbClose");
-      const lbCloseBtn = document.getElementById("lbCloseBtn");
-      const lbBackdrop = document.getElementById("lbBackdrop");
-
-      function openLightbox(card) {
-        const imgSrc = card.dataset.img || "";
-        const dlSrc = card.dataset.download || imgSrc;
-        const name = card.dataset.name || "Projeto";
-        const year = card.dataset.year || "";
-        const cat = card.dataset.cat || "";
-
-        lbName.textContent = name;
-        lbMeta.textContent = cat + (year ? "  ·  " + year : "");
-
-        // build image area
-        lbWrap.innerHTML = "";
-        if (imgSrc) {
-          const img = document.createElement("img");
-          img.src = imgSrc;
-          img.alt = name;
-          lbWrap.appendChild(img);
-        } else {
-          lbWrap.innerHTML = `
-        <div class="lb-placeholder">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1a2f5e" stroke-width="1.5" stroke-linecap="round" opacity="0.5"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
-        </div>`;
-        }
-
-        // download button
-        if (dlSrc) {
-          lbDl.href = dlSrc;
-          lbDl.download = name.replace(/\s+/g, "-").toLowerCase() + ".jpg";
-          lbDl.style.display = "inline-flex";
-        } else {
-          lbDl.style.display = "none";
-        }
-
-        lb.classList.add("open");
-        document.body.style.overflow = "hidden";
-      }
-
-      function closeLightbox() {
-        lb.classList.remove("open");
-        document.body.style.overflow = "";
-      }
-
+      // Abrir HTML do projeto ao clicar no card
       document.querySelectorAll(".prj-card").forEach((card) => {
-        const img = card.dataset.img;
-        if (img) {
-          card.addEventListener("click", () => {
-            window.open(img, "_blank");
-          });
-        }
-      });
-
-      lbClose.addEventListener("click", closeLightbox);
-      lbCloseBtn.addEventListener("click", closeLightbox);
-      lbBackdrop.addEventListener("click", closeLightbox);
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeLightbox();
-      });
-
-      // =======================
-      // ZOOM + DRAG NA IMAGEM
-      // =======================
-
-      let scale = 1;
-      let isDragging = false;
-      let startX = 0;
-      let startY = 0;
-      let translateX = 0;
-      let translateY = 0;
-      let activeImg = null;
-
-      function resetZoom() {
-        scale = 1;
-        translateX = 0;
-        translateY = 0;
-        if (activeImg) {
-          activeImg.style.transform = `translate(0px,0px) scale(1)`;
-        }
-      }
-
-      function applyTransform() {
-        if (activeImg) {
-          activeImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-        }
-      }
-
-      // quando abrir lightbox
-      const originalOpen = openLightbox;
-      openLightbox = function (card) {
-        originalOpen(card);
-
-        activeImg = lbWrap.querySelector("img");
-        resetZoom();
-
-        if (!activeImg) return;
-
-        // zoom com scroll
-        activeImg.addEventListener("wheel", (e) => {
-          e.preventDefault();
-          const zoomSpeed = 0.1;
-
-          if (e.deltaY < 0) {
-            scale += zoomSpeed;
-          } else {
-            scale -= zoomSpeed;
-            if (scale < 1) scale = 1;
+        card.addEventListener("click", () => {
+          const link = card.dataset.link;
+          if (link) {
+            window.open(link, "_blank");
           }
-          applyTransform();
         });
-
-        // drag
-        activeImg.addEventListener("mousedown", (e) => {
-          isDragging = true;
-          startX = e.clientX - translateX;
-          startY = e.clientY - translateY;
-        });
-
-        window.addEventListener("mousemove", (e) => {
-          if (!isDragging) return;
-          translateX = e.clientX - startX;
-          translateY = e.clientY - startY;
-          applyTransform();
-        });
-
-        window.addEventListener("mouseup", () => {
-          isDragging = false;
-        });
-      };
-
-      // reset ao fechar
-      const originalClose = closeLightbox;
-      closeLightbox = function () {
-        resetZoom();
-        originalClose();
-      };
+      });
     </script>
   </body>
 </html>
