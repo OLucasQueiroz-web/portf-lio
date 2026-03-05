@@ -1,0 +1,1770 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta property="og:title" content="WG Consultec - Consultoria Contábil" />
+    <meta
+      property="og:description"
+      content="Consultoria empresarial e contabilidade estratégica para empresas em Belo Horizonte."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WG Consultec" />
+    <meta
+      name="twitter:description"
+      content="Pare de pagar imposto demais. Comece a crescer de verdade."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ─── Reset & Base ─── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border: 0 solid;
+      }
+
+      html {
+        line-height: 1.5;
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        font-family: "Sora", sans-serif;
+        background-color: #ffffff;
+        color: #1a1a2e;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-size: inherit;
+        font-weight: inherit;
+        letter-spacing: -0.02em;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
+
+      img,
+      svg,
+      video,
+      canvas,
+      iframe {
+        display: block;
+        vertical-align: middle;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      ul,
+      ol {
+        list-style: none;
+      }
+
+      button {
+        cursor: pointer;
+        font: inherit;
+        background: transparent;
+        border: none;
+      }
+
+      input,
+      textarea {
+        font: inherit;
+        color: inherit;
+      }
+
+      /* ─── Utilities ─── */
+      .container {
+        max-width: 80rem;
+        margin-inline: auto;
+      }
+
+      .section-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .btn-gold {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: #c9a84c;
+        color: #0d1f3c;
+        font-weight: 600;
+        padding: 1rem 2rem;
+        border-radius: 2px;
+        transition:
+          background-color 0.2s,
+          transform 0.2s;
+      }
+
+      .btn-gold:hover {
+        background-color: #e8c97a;
+        transform: translateY(-2px);
+      }
+
+      .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        color: #5a6478;
+        border: 1px solid #e8e2d8;
+        font-weight: 600;
+        padding: 1rem 2rem;
+        border-radius: 2px;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+
+      .btn-outline:hover {
+        border-color: #c9a84c;
+        color: #c9a84c;
+      }
+
+      .bg-texture-grain {
+        position: relative;
+      }
+
+      .bg-texture-grain::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* ─── Nav ─── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid #f0ece4;
+      }
+
+      .nav-inner {
+        max-width: 80rem;
+        margin-inline: auto;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .nav-logo {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0d1f3c;
+        letter-spacing: -0.02em;
+      }
+
+      .nav-logo span {
+        color: #c9a84c;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #5a6478;
+      }
+
+      .nav-links a:hover {
+        color: #0d1f3c;
+      }
+
+      /* ─── Hero ─── */
+      #hero {
+        padding-top: 7rem;
+        padding-bottom: 5rem;
+        padding-inline: 1.5rem;
+      }
+
+      .hero-grid {
+        display: grid;
+        gap: 3rem;
+        align-items: center;
+      }
+
+      .hero-badge {
+        background-color: #f7f4ef;
+        color: #0d1f3c;
+        border-radius: 9999px;
+        margin-bottom: 2rem;
+      }
+
+      .hero-title {
+        font-size: clamp(2.5rem, 5vw, 3.8rem);
+        font-weight: 700;
+        color: #1a1a2e;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-title em {
+        font-style: italic;
+        color: #c9a84c;
+      }
+
+      .hero-subtitle {
+        font-size: 1.125rem;
+        color: #5a6478;
+        line-height: 1.7;
+        max-width: 30rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .hero-ctas {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .hero-trust {
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: #8a93a8;
+        font-weight: 500;
+      }
+
+      .hero-image-wrap {
+        position: relative;
+        max-width: 32rem;
+        margin-inline: auto;
+      }
+
+      .hero-image-bg {
+        position: absolute;
+        inset: -1rem;
+        background-color: #f7f4ef;
+        border-radius: 2px;
+        transform: rotate(-3deg);
+        z-index: 0;
+      }
+
+      .hero-image-wrap img {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        border-radius: 2px;
+        box-shadow: 0 20px 40px rgba(13, 31, 60, 0.12);
+        border: 1px solid #f0ece4;
+      }
+
+      .hero-float {
+        position: absolute;
+        z-index: 2;
+        background: #fff;
+        padding: 1rem;
+        border-radius: 2px;
+        box-shadow: 0 4px 20px rgba(13, 31, 60, 0.08);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .hero-float-left {
+        left: -1.5rem;
+        top: 2.5rem;
+      }
+      .hero-float-right {
+        right: -1.5rem;
+        bottom: 3rem;
+      }
+
+      .float-icon {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .float-icon.green {
+        background-color: rgba(45, 122, 79, 0.1);
+        color: #2d7a4f;
+      }
+      .float-icon.gold {
+        background-color: rgba(201, 168, 76, 0.1);
+        color: #c9a84c;
+      }
+
+      .float-label {
+        font-size: 0.75rem;
+        color: #8a93a8;
+        font-weight: 500;
+      }
+      .float-value {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #1a1a2e;
+      }
+
+      /* ─── Services ─── */
+      #services {
+        padding-block: 6rem;
+        padding-inline: 1.5rem;
+        background-color: #f7f4ef;
+      }
+
+      #services .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      #services .section-tag {
+        color: #c9a84c;
+        margin-bottom: 1.5rem;
+      }
+
+      #services h2 {
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 700;
+        color: #1a1a2e;
+        line-height: 1.2;
+        max-width: 48rem;
+        margin-inline: auto;
+        margin-bottom: 1.5rem;
+      }
+
+      #services .section-desc {
+        font-size: 1.125rem;
+        color: #5a6478;
+        max-width: 32rem;
+        margin-inline: auto;
+      }
+
+      .services-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .service-card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 2px;
+        box-shadow: 0 4px 20px rgba(13, 31, 60, 0.04);
+        border-top: 2px solid transparent;
+        transition:
+          box-shadow 0.2s,
+          transform 0.2s,
+          border-color 0.2s;
+      }
+
+      .service-card:hover {
+        box-shadow: 0 8px 30px rgba(13, 31, 60, 0.08);
+        transform: translateY(-4px);
+        border-top-color: #c9a84c;
+      }
+
+      .service-card svg {
+        width: 2.5rem;
+        height: 2.5rem;
+        color: #c9a84c;
+        margin-bottom: 1.5rem;
+      }
+
+      .service-card h3 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 0.75rem;
+      }
+
+      .service-card p {
+        font-size: 0.875rem;
+        color: #5a6478;
+        line-height: 1.6;
+      }
+
+      /* ─── Why Us ─── */
+      #why {
+        padding-block: 6rem;
+        padding-inline: 1.5rem;
+        background-color: #0d1f3c;
+        color: #fff;
+        overflow: hidden;
+        position: relative;
+      }
+
+      #why .section-tag {
+        color: #c9a84c;
+        margin-bottom: 1.5rem;
+      }
+
+      #why h2 {
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 4rem;
+      }
+
+      .why-timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        position: relative;
+        margin-bottom: 4rem;
+      }
+
+      .why-timeline::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 39px;
+        width: 2px;
+        background-color: #162a4f;
+      }
+
+      .why-item {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .why-number {
+        flex-shrink: 0;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 9999px;
+        background: #162a4f;
+        border: 4px solid #0d1f3c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #c9a84c;
+        font-weight: 700;
+        font-size: 0.875rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .why-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1.5rem;
+        border-radius: 2px;
+        flex: 1;
+        transition:
+          background 0.3s,
+          border-color 0.3s;
+      }
+
+      .why-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(201, 168, 76, 0.3);
+      }
+
+      .why-card-num {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: rgba(201, 168, 76, 0.2);
+        margin-bottom: 0.5rem;
+      }
+
+      .why-card h3 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 0.75rem;
+      }
+
+      .why-card p {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.6;
+      }
+
+      .why-quote {
+        text-align: center;
+        max-width: 48rem;
+        margin-inline: auto;
+      }
+
+      .why-quote blockquote {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+        font-style: italic;
+        margin-bottom: 2rem;
+      }
+
+      .why-quote cite {
+        display: block;
+        color: #c9a84c;
+        font-weight: 600;
+        font-size: 0.875rem;
+        font-style: normal;
+        margin-bottom: 2.5rem;
+      }
+
+      /* ─── Diagnostic ─── */
+      #diagnostic {
+        padding-block: 6rem;
+        padding-inline: 1.5rem;
+        background: radial-gradient(
+          ellipse at top left,
+          #ede8e0 0%,
+          #f5f2e8 50%,
+          #ede8e0 100%
+        );
+      }
+
+      .diagnostic-grid {
+        display: grid;
+        gap: 3rem;
+        align-items: start;
+      }
+
+      .diagnostic-left .section-tag {
+        background: #fff;
+        color: #0d1f3c;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
+      }
+
+      .diagnostic-left h2 {
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 700;
+        color: #1a1a2e;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+      }
+
+      .diagnostic-left > p {
+        font-size: 1rem;
+        color: #5a6478;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      .diagnostic-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .diagnostic-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      .diagnostic-list li svg {
+        flex-shrink: 0;
+        width: 1.25rem;
+        height: 1.25rem;
+        color: #c9a84c;
+        margin-top: 2px;
+      }
+
+      .diagnostic-list li span {
+        font-weight: 500;
+        color: #1a1a2e;
+      }
+
+      .contact-box {
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid #e8e2d8;
+        padding: 1.25rem;
+        border-radius: 2px;
+      }
+
+      .contact-box .label {
+        font-size: 0.875rem;
+        color: #5a6478;
+        margin-bottom: 0.25rem;
+      }
+      .contact-box .hours {
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 0.5rem;
+      }
+      .contact-box .phone {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #0d1f3c;
+      }
+
+      .form-card {
+        background: #fff;
+        padding: 2.5rem;
+        border-radius: 2px;
+        box-shadow: 0 10px 40px rgba(13, 31, 60, 0.08);
+      }
+
+      .form-card h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-card > p {
+        color: #5a6478;
+        margin-bottom: 2rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1a1a2e;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-group input {
+        width: 100%;
+        background: #fcfcfc;
+        border: 1px solid #e8e2d8;
+        border-radius: 2px;
+        padding: 0.75rem 1rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+        outline: none;
+      }
+
+      .form-group input:focus {
+        border-color: #c9a84c;
+        box-shadow: 0 0 0 1px #c9a84c;
+      }
+
+      .form-submit {
+        width: 100%;
+        background: #c9a84c;
+        color: #0d1f3c;
+        font-weight: 700;
+        padding: 1rem 2rem;
+        border-radius: 2px;
+        margin-top: 1rem;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+
+      .form-submit:hover {
+        background: #e8c97a;
+        transform: translateY(-2px);
+      }
+
+      .form-note {
+        text-align: center;
+        font-size: 0.75rem;
+        color: #8a93a8;
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.375rem;
+      }
+
+      /* ─── Security ─── */
+      #security {
+        padding-block: 6rem;
+        padding-inline: 1.5rem;
+        background: #fff;
+      }
+
+      .security-grid {
+        display: grid;
+        gap: 3rem;
+        align-items: center;
+      }
+
+      .security-left .section-tag {
+        background: #f7f4ef;
+        color: #0d1f3c;
+        margin-bottom: 1.5rem;
+      }
+
+      .security-left h2 {
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 700;
+        color: #1a1a2e;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+      }
+
+      .security-left p {
+        font-size: 1.125rem;
+        color: #5a6478;
+      }
+
+      .security-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+
+      .security-card {
+        background: #fff;
+        border: 1px solid #f0ece4;
+        padding: 1.5rem;
+        border-radius: 2px;
+        box-shadow: 0 4px 20px rgba(13, 31, 60, 0.03);
+        transition: box-shadow 0.2s;
+      }
+
+      .security-card:hover {
+        box-shadow: 0 8px 30px rgba(13, 31, 60, 0.06);
+      }
+
+      .security-card svg {
+        width: 2rem;
+        height: 2rem;
+        color: #2d7a4f;
+        margin-bottom: 1rem;
+      }
+
+      .security-card p {
+        font-weight: 600;
+        color: #1a1a2e;
+        font-size: 0.9375rem;
+      }
+
+      /* ─── CTA Final ─── */
+      #cta-final {
+        padding-block: 6rem;
+        padding-inline: 1.5rem;
+        background: #0d1f3c;
+        color: #fff;
+        text-align: center;
+        position: relative;
+      }
+
+      #cta-final h2 {
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 2.5rem;
+      }
+
+      .cta-checks {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .cta-check-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .cta-check-item svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        color: #c9a84c;
+        flex-shrink: 0;
+      }
+
+      .cta-btn-main {
+        display: inline-block;
+        background: #c9a84c;
+        color: #0d1f3c;
+        font-weight: 700;
+        font-size: 1.125rem;
+        padding: 1.25rem 2.5rem;
+        border-radius: 2px;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 10px 30px rgba(201, 168, 76, 0.2);
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+
+      .cta-btn-main:hover {
+        background: #e8c97a;
+        transform: translateY(-4px);
+      }
+
+      .cta-contact-info {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem 1.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #8a93a8;
+      }
+
+      /* ─── Footer ─── */
+      footer {
+        background: #070f1e;
+        padding-top: 5rem;
+        padding-bottom: 2.5rem;
+        padding-inline: 1.5rem;
+        color: #8a93a8;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        margin-bottom: 4rem;
+      }
+
+      .footer-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -0.02em;
+        margin-bottom: 1.5rem;
+      }
+
+      .footer-logo span {
+        color: #c9a84c;
+      }
+
+      .footer-about {
+        font-size: 0.875rem;
+        line-height: 1.625;
+        margin-bottom: 1.5rem;
+      }
+
+      .footer-socials {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-btn {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        transition:
+          background 0.2s,
+          color 0.2s;
+        cursor: pointer;
+      }
+
+      .social-btn:hover {
+        background: #c9a84c;
+        color: #0d1f3c;
+      }
+
+      .footer-col h4 {
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+      }
+
+      .footer-col ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        font-size: 0.875rem;
+      }
+
+      .footer-col ul a:hover {
+        color: #fff;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.75rem;
+        text-align: center;
+      }
+
+      .footer-bottom-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      .footer-bottom-links a:hover {
+        color: #fff;
+      }
+
+      /* ─── Responsive ─── */
+      @media (min-width: 640px) {
+        .hero-ctas {
+          flex-direction: row;
+        }
+        .cta-checks {
+          flex-direction: row;
+          justify-content: center;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .services-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .footer-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .footer-bottom {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .hero-grid {
+          grid-template-columns: 7fr 5fr;
+        }
+        .services-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .diagnostic-grid {
+          grid-template-columns: 5fr 7fr;
+        }
+        .security-grid {
+          grid-template-columns: 5fr 7fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+        .hero-float-left {
+          left: -3rem;
+        }
+        .hero-float-right {
+          right: -2rem;
+        }
+
+        .why-timeline::before {
+          left: 50%;
+          margin-left: -1px;
+        }
+
+        .why-number {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .why-card {
+          width: calc(50% - 3rem);
+          flex: none;
+        }
+
+        .why-item .why-card {
+          margin-left: auto;
+          margin-right: calc(50% + 1.5rem);
+        }
+        .why-item.alt .why-card {
+          margin-left: calc(50% + 1.5rem);
+          margin-right: auto;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ─── Navigation ─── -->
+    <nav>
+      <div class="nav-inner">
+        <div class="nav-logo">WG<span>Consultec</span></div>
+        <div class="nav-links">
+          <a href="#services">Serviços</a>
+          <a href="#why">Por Que Nós</a>
+          <a href="#diagnostic">Diagnóstico</a>
+          <a href="#cta-final">Contato</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ─── Hero ─── -->
+    <section id="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="section-tag hero-badge">
+            Consultoria Especializada · BH e Região
+          </div>
+
+          <h1 class="hero-title">
+            Pare de pagar imposto demais.
+            <em>Comece a crescer de verdade.</em>
+          </h1>
+
+          <p class="hero-subtitle">
+            A maioria das empresas em BH perde dinheiro todo mês por falta de
+            estratégia fiscal e financeira. A WG Consultec identifica onde você
+            está sangrando — e transforma isso em lucro.
+          </p>
+
+          <div class="hero-ctas">
+            <button class="btn-gold">
+              Quero meu diagnóstico gratuito
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </button>
+            <button class="btn-outline">Ver como funciona</button>
+          </div>
+
+          <div class="hero-trust">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+              />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+            <span>6+ anos · Simples Nacional · Fator R · eSocial</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="hero-image-wrap">
+            <div class="hero-image-bg"></div>
+            <img src="../../assets/landing-pages/dashboard-mockup.png" alt="Dashboard Financeiro" />
+
+            <div class="hero-float hero-float-left">
+              <div class="float-icon green">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                  <path d="m9 11 3 3L22 4" />
+                </svg>
+              </div>
+              <div>
+                <div class="float-label">Imposto reduzido!</div>
+                <div class="float-value">R$ 14.500/ano</div>
+              </div>
+            </div>
+
+            <div class="hero-float hero-float-right">
+              <div class="float-icon gold">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+                  <path d="M18 17V9" />
+                  <path d="M13 17V5" />
+                  <path d="M8 17v-3" />
+                </svg>
+              </div>
+              <div>
+                <div class="float-label">Fluxo de caixa</div>
+                <div class="float-value">Positivo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Services ─── -->
+    <section id="services">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">O que fazemos</div>
+          <h2>Tudo que sua empresa precisa para crescer com segurança</h2>
+          <p class="section-desc">
+            Do planejamento tributário à folha de pagamento — uma equipe só, com
+            visão do todo.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M10 12h4" />
+              <path d="M10 8h4" />
+              <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
+              <path
+                d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"
+              />
+              <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" />
+            </svg>
+            <h3>Consultoria Empresarial</h3>
+            <p>
+              Identificamos gargalos operacionais e tributários que estão
+              freando seu crescimento. Você sai da reunião com um plano — não
+              com mais dúvidas.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"
+              />
+              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+            </svg>
+            <h3>BPO Financeiro</h3>
+            <p>
+              Sua equipe foca no negócio. A gente cuida do fluxo de caixa,
+              contas a pagar e receber — com visibilidade real do que está
+              acontecendo com seu dinheiro.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+              <path d="M18 17V9" />
+              <path d="M13 17V5" />
+              <path d="M8 17v-3" />
+            </svg>
+            <h3>Contabilidade Consultiva</h3>
+            <p>
+              Contabilidade que fala com você, não só com o fisco. Usamos seus
+              números para ajudar nas decisões que realmente importam.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+              <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+              <path d="M7 21h10" />
+              <path d="M12 3v18" />
+              <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+            </svg>
+            <h3>Gestão Fiscal</h3>
+            <p>
+              Seu enquadramento tributário está correto? Muitas empresas pagam
+              mais por estarem no Anexo errado. A gente revisa, ajusta e reduz —
+              dentro da lei.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <circle cx="9" cy="7" r="4" />
+            </svg>
+            <h3>Departamento Pessoal</h3>
+            <p>
+              Folha certa, eSocial em dia e sua empresa blindada contra passivos
+              trabalhistas. Sem dor de cabeça, sem susto na fiscalização.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+              />
+              <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+              <path d="m9 15 2 2 4-4" />
+            </svg>
+            <h3>Legalização Empresarial</h3>
+            <p>
+              Abre a empresa rápido, do jeito certo. JUCEMG, prefeitura e todos
+              os órgãos — a gente resolve enquanto você já pensa no negócio.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Why Us ─── -->
+    <section id="why" class="bg-texture-grain">
+      <div class="container" style="position: relative; z-index: 1">
+        <div style="text-align: center; margin-bottom: 4rem">
+          <div
+            class="section-tag"
+            style="color: #c9a84c; margin-bottom: 1.5rem"
+          >
+            Por que nós
+          </div>
+          <h2
+            style="
+              font-size: clamp(1.8rem, 3vw, 2.8rem);
+              font-weight: 700;
+              line-height: 1.2;
+            "
+          >
+            Contador todo mundo tem.<br />
+            Parceiro estratégico é diferente.
+          </h2>
+        </div>
+
+        <div class="why-timeline">
+          <div class="why-item">
+            <div class="why-number">01</div>
+            <div class="why-card">
+              <div class="why-card-num">01</div>
+              <h3>A gente entra fundo</h3>
+              <p>
+                Não fazemos checklist. Analisamos seu negócio de verdade —
+                fluxo, tributação, folha — para encontrar o que está custando
+                mais do que deveria.
+              </p>
+            </div>
+          </div>
+
+          <div class="why-item alt">
+            <div class="why-number">02</div>
+            <div class="why-card">
+              <div class="why-card-num">02</div>
+              <h3>Solução sob medida</h3>
+              <p>
+                Empresa de serviço não é igual a comércio. Autônomo não é igual
+                a LTDA. Cada cliente tem uma estratégia própria, construída para
+                a sua realidade.
+              </p>
+            </div>
+          </div>
+
+          <div class="why-item">
+            <div class="why-number">03</div>
+            <div class="why-card">
+              <div class="why-card-num">03</div>
+              <h3>Presença contínua</h3>
+              <p>
+                Não sumimos depois de fechar contrato. Estamos disponíveis
+                quando você precisa tomar decisões — não só no fechamento do
+                ano.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="why-quote">
+          <blockquote>
+            "Nosso trabalho começa onde o contador tradicional termina."
+          </blockquote>
+          <cite>— William Soares Gonçalves, Fundador</cite>
+          <button class="btn-gold">
+            Falar com um especialista
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Diagnostic ─── -->
+    <section id="diagnostic">
+      <div class="container diagnostic-grid">
+        <div class="diagnostic-left">
+          <div class="section-tag">Diagnóstico Gratuito</div>
+          <h2>Quanto sua empresa está deixando na mesa todo mês?</h2>
+          <p>
+            Em 6 anos, já vimos de tudo: empresa no Anexo V quando deveria estar
+            no III, folha com erros de eSocial acumulando multa, fluxo de caixa
+            sem controle real. Uma conversa de 30 minutos pode mudar o rumo do
+            seu negócio.
+          </p>
+
+          <ul class="diagnostic-list">
+            <li>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                <path d="m9 11 3 3L22 4" />
+              </svg>
+              <span
+                >Análise tributária — Simples Nacional, Fator R e
+                enquadramento</span
+              >
+            </li>
+            <li>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                <path d="m9 11 3 3L22 4" />
+              </svg>
+              <span>Revisão do seu BPO financeiro atual</span>
+            </li>
+            <li>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                <path d="m9 11 3 3L22 4" />
+              </svg>
+              <span>Diagnóstico de DP e riscos trabalhistas</span>
+            </li>
+            <li>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                <path d="m9 11 3 3L22 4" />
+              </svg>
+              <span>Sem compromisso, sem custo</span>
+            </li>
+          </ul>
+
+          <div class="contact-box">
+            <div class="label">Horário de atendimento</div>
+            <div class="hours">Seg–Sex: 08:00 às 21:00</div>
+            <div class="phone">(31) 99444-7563</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-card">
+            <h3>Solicite seu diagnóstico gratuito</h3>
+            <p>Resposta em até 1 dia útil.</p>
+
+            <div class="form-group">
+              <label for="nome">Nome Completo</label>
+              <input
+                id="nome"
+                type="text"
+                placeholder="Como devemos chamar você?"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">E-mail Corporativo</label>
+              <input id="email" type="email" placeholder="seu@email.com.br" />
+            </div>
+
+            <div class="form-group">
+              <label for="whatsapp">WhatsApp</label>
+              <input id="whatsapp" type="tel" placeholder="(31) 90000-0000" />
+            </div>
+
+            <button class="form-submit">Quero meu diagnóstico gratuito</button>
+
+            <div class="form-note">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              Sem spam. Você será contatado apenas pela nossa equipe.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Security ─── -->
+    <section id="security">
+      <div class="container security-grid">
+        <div class="security-left">
+          <div class="section-tag">Segurança</div>
+          <h2>Seu patrimônio e seus dados estão protegidos conosco</h2>
+          <p>
+            Trabalhamos com os mesmos padrões de segurança e conformidade
+            exigidos pelos órgãos reguladores.
+          </p>
+        </div>
+
+        <div class="security-cards">
+          <div class="security-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+              />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+            <p>Escritório registrado no CRC/MG</p>
+          </div>
+
+          <div class="security-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <p>Sigilo total das informações do seu negócio</p>
+          </div>
+
+          <div class="security-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+              />
+              <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+              <path d="M10 9H8" />
+              <path d="M16 13H8" />
+              <path d="M16 17H8" />
+            </svg>
+            <p>Conformidade com LGPD e Receita Federal</p>
+          </div>
+
+          <div class="security-card">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+              />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+            <p>Mais de 6 anos de atuação auditável</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CTA Final ─── -->
+    <section id="cta-final" class="bg-texture-grain">
+      <div class="container" style="position: relative; z-index: 1">
+        <h2>Retome o controle financeiro do seu negócio</h2>
+
+        <div class="cta-checks">
+          <div class="cta-check-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            <span>Diagnóstico gratuito — sem compromisso</span>
+          </div>
+          <div class="cta-check-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            <span>Atendimento com especialista real</span>
+          </div>
+          <div class="cta-check-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            <span>Estratégia fiscal feita para a sua empresa</span>
+          </div>
+        </div>
+
+        <a href="#diagnostic" class="cta-btn-main"
+          >Quero meu diagnóstico gratuito →</a
+        >
+
+        <div class="cta-contact-info">
+          <span>(31) 99444-7563</span>
+          <span>•</span>
+          <span>Seg–Sex 08h–21h</span>
+          <span>•</span>
+          <span>contato@wgconsultec.com.br</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Footer ─── -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">WG<span>Consultec</span></div>
+            <p class="footer-about">
+              Consultoria empresarial, contabilidade estratégica e BPO
+              financeiro para empresas que querem crescer de verdade em Belo
+              Horizonte e região.
+            </p>
+            <div class="footer-socials">
+              <div class="social-btn">in</div>
+              <div class="social-btn">ig</div>
+              <div class="social-btn">fb</div>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h4>Serviços</h4>
+            <ul>
+              <li><a href="#">Consultoria Empresarial</a></li>
+              <li><a href="#">BPO Financeiro</a></li>
+              <li><a href="#">Contabilidade Consultiva</a></li>
+              <li><a href="#">Gestão Fiscal</a></li>
+              <li><a href="#">Departamento Pessoal</a></li>
+              <li><a href="#">Legalização Empresarial</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Empresa</h4>
+            <ul>
+              <li><a href="#">Sobre Nós</a></li>
+              <li><a href="#">Por Que Nós</a></li>
+              <li><a href="#">Contato</a></li>
+              <li><a href="#">Trabalhe Conosco</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Contato</h4>
+            <ul>
+              <li>Belo Horizonte, MG</li>
+              <li>(31) 99444-7563</li>
+              <li>contato@wgconsultec.com.br</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div>© 2026 WG Consultec. Todos os direitos reservados.</div>
+          <div class="footer-bottom-links">
+            <a href="#">Política de Privacidade</a>
+            <a href="#">Termos de Uso</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
